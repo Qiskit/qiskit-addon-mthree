@@ -1,8 +1,8 @@
 name: Release Artifacts
 on:
   push:
-    tags:
-      - '*'
+    branches: [2.8]
+
 jobs:
   build_wheels:
     name: Build wheels on ${{ matrix.os }}
@@ -34,19 +34,13 @@ jobs:
           CIBW_BEFORE_TEST_LINUX: rm -rf /mthree_test && cp -r {project}/mthree/test /mthree_test && rm -f /mthree_test/test_converters.py && rm -f /mthree_test/test_columns.py
           CIBW_BEFORE_TEST_WINDOWS: rm -rf C:\Users\RUNNER~1\AppData\Local\Temp\mthree_test && cp -r {project}/mthree/test C:\Users\RUNNER~1\AppData\Local\Temp\mthree_test && rm -f C:\Users\RUNNER~1\AppData\Local\Temp\mthree_test\test_converters.py && rm -f C:\Users\RUNNER~1\AppData\Local\Temp\mthree_test\test_columns.py && pip install --prefer-binary orjson
           CIBW_BEFORE_TEST_MACOS: rm -rf /tmp/mthree_test && cp -r {project}/mthree/test /tmp/mthree_test && rm -f /tmp/mthree_test/test_converters.py && rm -f /tmp/mthree_test/test_columns.py
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
+          name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
           path: ./wheelhouse/*.whl
-      - name: Install twine
-        run: |
-          python -m pip install twine
-      - name: Publish to PyPi
-        env:
-          TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
-          TWINE_USERNAME: __token__
-        run: twine upload ./wheelhouse/*whl
-  sdist-build:
-    name: Build and Publish Release Artifacts
+  
+  make_sdist:
+    name: Make Sdist
     needs: [build_wheels]
     runs-on: ubuntu-latest
     steps:
@@ -61,11 +55,22 @@ jobs:
         run: |
           python setup.py sdist
         shell: bash
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
-          path: ./dist/mthree*
-      - name: Publish to PyPi
-        env:
-          TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
-          TWINE_USERNAME: __token__
-        run: twine upload dist/mthree*
+          name: cibw-sdist
+          path: dist/*.tar.gz
+
+  upload_all:
+    name: Upload to PyPi
+    needs: [build_wheels, make_sdist]
+    environment: release
+    permissions:
+      id-token: write
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/download-artifact@v4
+      with:
+        pattern: cibw-*
+        path: dist
+        merge-multiple: true
+    - uses: pypa/gh-action-pypi-publish@release/v1
