@@ -28,6 +28,10 @@ this makes error analysis more difficult.  M3 works for mid-circuit measurements
 provided that one is interested in ensemble averages, as opposed to correcting single-shot
 measurements; it cannot mitigate single-shot measurements used for conditional-gate logic. 
 
+.. tip:: Not sure where to get started?
+   
+   Have a look at how others have utilized M3: :ref:`papers`.
+
 
 .. toctree::
     :maxdepth: 1
@@ -36,6 +40,7 @@ measurements; it cannot mitigate single-shot measurements used for conditional-g
     self
     Installation <installation>
     Citing <citing>
+    Papers using M3 <papers>
 
 .. toctree::
     :maxdepth: 1

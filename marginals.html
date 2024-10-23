@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Converting to probabilites" href="probs.html" /><link rel="prev" title="Error analysis" href="error.html" />
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2024.01.29 -->
-        <title>Low-weight observables (Marginals) - Mthree 2.7.0</title>
+        <title>Low-weight observables (Marginals) - Mthree 2.8.0</title>
       <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-sphinx-theme.css?v=fe84956c" />
@@ -143,7 +143,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">Mthree 2.7.0</div></a>
+      <a href="index.html"><div class="brand">Mthree 2.8.0</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -170,7 +170,7 @@
     </div>
   </a>
   
-  <span class="sidebar-brand-text">Mthree 2.7.0</span>
+  <span class="sidebar-brand-text">Mthree 2.8.0</span>
 </div><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
@@ -178,9 +178,10 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
-<li class="toctree-l1"><a class="reference internal" href="index.html">mthree (2.7.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">mthree (2.8.0)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="citing.html">Citing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="papers.html">Papers using M3</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
 <ul class="current">
@@ -337,14 +338,14 @@ e.g. for the operator <span class="math notranslate nohighlight">\(\langle ZIIZI
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;001&#39;: 543,
- &#39;000&#39;: 201,
- &#39;010&#39;: 35,
- &#39;011&#39;: 846,
- &#39;101&#39;: 1577,
- &#39;111&#39;: 5966,
- &#39;110&#39;: 309,
- &#39;100&#39;: 523}
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;000&#39;: 187,
+ &#39;010&#39;: 41,
+ &#39;100&#39;: 559,
+ &#39;101&#39;: 1584,
+ &#39;011&#39;: 778,
+ &#39;111&#39;: 6054,
+ &#39;110&#39;: 285,
+ &#39;001&#39;: 512}
 </pre></div>
 </div>
 </div>
@@ -357,14 +358,14 @@ e.g. for the operator <span class="math notranslate nohighlight">\(\langle ZIIZI
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;001&#39;: 543,
- &#39;000&#39;: 201,
- &#39;010&#39;: 35,
- &#39;011&#39;: 846,
- &#39;101&#39;: 1577,
- &#39;111&#39;: 5966,
- &#39;110&#39;: 309,
- &#39;100&#39;: 523}
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;000&#39;: 187,
+ &#39;010&#39;: 41,
+ &#39;100&#39;: 559,
+ &#39;101&#39;: 1584,
+ &#39;011&#39;: 778,
+ &#39;111&#39;: 6054,
+ &#39;110&#39;: 285,
+ &#39;001&#39;: 512}
 </pre></div>
 </div>
 </div>
@@ -397,14 +398,14 @@ We can pass a mapping to <cite>marginal_distribution</cite> and get such a reduc
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;000&#39;: np.float64(0.017155160328572564),
- &#39;001&#39;: np.float64(0.05007120573179277),
- &#39;010&#39;: np.float64(2.8209583316265804e-05),
- &#39;011&#39;: np.float64(0.07603910770332412),
- &#39;100&#39;: np.float64(0.04749482544665021),
- &#39;101&#39;: np.float64(0.14425092303593806),
- &#39;110&#39;: np.float64(0.008642069895662912),
- &#39;111&#39;: np.float64(0.6563184982747432)}
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;000&#39;: np.float32(0.015853668),
+ &#39;001&#39;: np.float32(0.047518276),
+ &#39;010&#39;: np.float32(0.0010261494),
+ &#39;011&#39;: np.float32(0.06968537),
+ &#39;100&#39;: np.float32(0.05123873),
+ &#39;101&#39;: np.float32(0.14575619),
+ &#39;110&#39;: np.float32(0.0058767884),
+ &#39;111&#39;: np.float32(0.6630448)}
 </pre></div>
 </div>
 </div>
@@ -418,7 +419,7 @@ eigenvalues because the operator will be all <cite>Z</cite>’s:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>-0.5078254780730048
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>-0.52565598487854
 </pre></div>
 </div>
 </div>
@@ -459,7 +460,7 @@ eigenvalues because the operator will be all <cite>Z</cite>’s:</p>
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/09/24</div>
+              Last updated on 2024/10/23</div>
           </div>
           <div class="right-details">
             
@@ -476,7 +477,7 @@ eigenvalues because the operator will be all <cite>Z</cite>’s:</p>
   </div>
 </div><script src="_static/jquery.js?v=5d32c60e"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="_static/documentation_options.js?v=dfec817d"></script>
+    <script src="_static/documentation_options.js?v=69ff2ef9"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>

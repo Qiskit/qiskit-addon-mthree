@@ -193,4 +193,4 @@ is set too low.
 
 .. jupyter-execute::
 
-    quasis = mit.apply_correction(raw_counts, range(6), method='iterative', tol=1e-6)
+    quasis = mit.apply_correction(raw_counts, range(6), method='iterative', tol=1e-5)

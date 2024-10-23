@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2024.01.29 -->
-        <title>mthree.mitigation - Mthree 2.7.0</title>
+        <title>mthree.mitigation - Mthree 2.8.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/qiskit-sphinx-theme.css?v=fe84956c" />
@@ -143,7 +143,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">Mthree 2.7.0</div></a>
+      <a href="../../index.html"><div class="brand">Mthree 2.8.0</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -170,7 +170,7 @@
     </div>
   </a>
   
-  <span class="sidebar-brand-text">Mthree 2.7.0</span>
+  <span class="sidebar-brand-text">Mthree 2.8.0</span>
 </div><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
@@ -178,9 +178,10 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../index.html">mthree (2.7.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">mthree (2.8.0)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../papers.html">Papers using M3</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
 <ul>
@@ -286,12 +287,9 @@
 
 <span class="kn">import</span> <span class="nn">psutil</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">scipy.linalg</span> <span class="k">as</span> <span class="nn">la</span>
-<span class="kn">import</span> <span class="nn">scipy.sparse.linalg</span> <span class="k">as</span> <span class="nn">spla</span>
 <span class="kn">import</span> <span class="nn">orjson</span>
-<span class="kn">from</span> <span class="nn">qiskit.providers</span> <span class="kn">import</span> <span class="n">BackendV2</span>
-<span class="kn">from</span> <span class="nn">qiskit_ibm_runtime</span> <span class="kn">import</span> <span class="n">SamplerV2</span>
-
+<span class="kn">import</span> <span class="nn">runningman</span> <span class="k">as</span> <span class="nn">rm</span>
+<span class="kn">from</span> <span class="nn">runningman.utils</span> <span class="kn">import</span> <span class="n">is_ibm_backend</span>
 
 <span class="kn">from</span> <span class="nn">mthree.circuits</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">_tensor_meas_states</span><span class="p">,</span>
@@ -299,10 +297,10 @@
     <span class="n">balanced_cal_strings</span><span class="p">,</span>
     <span class="n">balanced_cal_circuits</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">mthree.matrix</span> <span class="kn">import</span> <span class="n">_reduced_cal_matrix</span><span class="p">,</span> <span class="n">sdd_check</span>
-<span class="kn">from</span> <span class="nn">mthree.utils</span> <span class="kn">import</span> <span class="n">counts_to_vector</span><span class="p">,</span> <span class="n">vector_to_quasiprobs</span><span class="p">,</span> <span class="n">gmres</span>
-<span class="kn">from</span> <span class="nn">mthree.norms</span> <span class="kn">import</span> <span class="n">ainv_onenorm_est_lu</span><span class="p">,</span> <span class="n">ainv_onenorm_est_iter</span>
-<span class="kn">from</span> <span class="nn">mthree.matvec</span> <span class="kn">import</span> <span class="n">M3MatVec</span>
+<span class="kn">from</span> <span class="nn">mthree.direct</span> <span class="kn">import</span> <span class="n">direct_solver</span> <span class="k">as</span> <span class="n">direct_solve</span>
+<span class="kn">from</span> <span class="nn">mthree.direct</span> <span class="kn">import</span> <span class="n">reduced_cal_matrix</span> <span class="k">as</span> <span class="n">cal_matrix</span>
+<span class="kn">from</span> <span class="nn">mthree.iterative</span> <span class="kn">import</span> <span class="n">iterative_solver</span>
+
 <span class="kn">from</span> <span class="nn">mthree.exceptions</span> <span class="kn">import</span> <span class="n">M3Error</span>
 <span class="kn">from</span> <span class="nn">mthree.classes</span> <span class="kn">import</span> <span class="n">QuasiCollection</span>
 <span class="kn">from</span> <span class="nn">._helpers</span> <span class="kn">import</span> <span class="n">system_info</span>
@@ -330,7 +328,8 @@
 <span class="sd">            cal_timestamp (str): Time at which cals were taken</span>
 <span class="sd">            single_qubit_cals (list): 1Q calibration matrices</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">executor</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">is_ibm_backend</span><span class="p">(</span><span class="n">system</span><span class="p">):</span>
+            <span class="n">system</span> <span class="o">=</span> <span class="n">rm</span><span class="o">.</span><span class="n">RunningManBackend</span><span class="p">(</span><span class="n">system</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">system</span> <span class="o">=</span> <span class="n">system</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">system_info</span> <span class="o">=</span> <span class="n">system_info</span><span class="p">(</span><span class="n">system</span><span class="p">)</span> <span class="k">if</span> <span class="n">system</span> <span class="k">else</span> <span class="p">{}</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">single_qubit_cals</span> <span class="o">=</span> <span class="kc">None</span>
@@ -371,41 +370,12 @@
 <span class="sd">            ndarray: 1D Array of float cals data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">qubits</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">qubits</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
-        <span class="n">cals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">qubits</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">cals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">4</span> <span class="o">*</span> <span class="n">qubits</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
 
         <span class="c1"># Reverse index qubits for easier indexing later</span>
         <span class="k">for</span> <span class="n">kk</span><span class="p">,</span> <span class="n">qubit</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">qubits</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
-            <span class="n">cals</span><span class="p">[</span><span class="mi">4</span> <span class="o">*</span> <span class="n">kk</span><span class="p">:</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">kk</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">single_qubit_cals</span><span class="p">[</span><span class="n">qubit</span><span class="p">]</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+            <span class="n">cals</span><span class="p">[</span><span class="mi">4</span> <span class="o">*</span> <span class="n">kk</span> <span class="p">:</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">kk</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">single_qubit_cals</span><span class="p">[</span><span class="n">qubit</span><span class="p">]</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">cals</span>
-
-    <span class="k">def</span> <span class="nf">_check_sdd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">counts</span><span class="p">,</span> <span class="n">qubits</span><span class="p">,</span> <span class="n">distance</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Checks if reduced A-matrix is SDD or not</span>
-
-<span class="sd">        Parameters:</span>
-<span class="sd">            counts (dict): Dictionary of counts.</span>
-<span class="sd">            qubits (array_like): List of qubits.</span>
-<span class="sd">            distance (int): Distance to compute over.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            bool: True if A-matrix is SDD, else False</span>
-
-<span class="sd">        Raises:</span>
-<span class="sd">            M3Error: Number of qubits supplied does not match bit-string length.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># If distance is None, then assume max distance.</span>
-        <span class="n">num_bits</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">qubits</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">distance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">distance</span> <span class="o">=</span> <span class="n">num_bits</span>
-
-        <span class="c1"># check if len of bitstrings does not equal number of qubits passed.</span>
-        <span class="n">bitstring_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">counts</span><span class="p">)))</span>
-        <span class="k">if</span> <span class="n">bitstring_len</span> <span class="o">!=</span> <span class="n">num_bits</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">M3Error</span><span class="p">(</span>
-                <span class="s2">&quot;Bitstring length (</span><span class="si">{}</span><span class="s2">) does not match&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bitstring_len</span><span class="p">)</span>
-                <span class="o">+</span> <span class="s2">&quot; number of qubits (</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_bits</span><span class="p">)</span>
-            <span class="p">)</span>
-        <span class="n">cals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_form_cals</span><span class="p">(</span><span class="n">qubits</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">sdd_check</span><span class="p">(</span><span class="n">counts</span><span class="p">,</span> <span class="n">cals</span><span class="p">,</span> <span class="n">num_bits</span><span class="p">,</span> <span class="n">distance</span><span class="p">)</span>
 
 <div class="viewcode-block" id="M3Mitigation.tensored_cals_from_system">
 <a class="viewcode-back" href="../../stubs/mthree.M3Mitigation.html#mthree.M3Mitigation.tensored_cals_from_system">[docs]</a>
@@ -441,8 +411,8 @@
         <span class="n">initial_reset</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">rep_delay</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">cals_file</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">async_cal</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-        <span class="n">mode</span><span class="o">=</span><span class="kc">None</span>
+        <span class="n">async_cal</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">runtime_mode</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Grab calibration data from system.</span>
 
@@ -454,8 +424,8 @@
 <span class="sd">            initial_reset (bool): Use resets at beginning of calibration circuits, default=False.</span>
 <span class="sd">            rep_delay (float): Delay between circuits on IBM Quantum backends.</span>
 <span class="sd">            cals_file (str): Output path to write JSON calibration data to.</span>
-<span class="sd">            async_cal (bool): Do calibration async in a separate thread, default is False.</span>
-<span class="sd">            mode (Batch or Session): Mode to run jobs in, default=None</span>
+<span class="sd">            async_cal (bool): Do calibration async in a separate thread, default is True.</span>
+<span class="sd">            runtime_mode (Batch or Session): Mode to run jobs in if using IBM system, default=None</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            list: List of jobs submitted.</span>
@@ -463,15 +433,14 @@
 <span class="sd">        Raises:</span>
 <span class="sd">            M3Error: Called while a calibration currently in progress.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">mode</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">executor</span> <span class="o">=</span> <span class="n">SamplerV2</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">mode</span><span class="o">.</span><span class="n">backend</span><span class="p">()</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">M3Error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Mode backend </span><span class="si">{</span><span class="n">mode</span><span class="o">.</span><span class="n">backend</span><span class="p">()</span><span class="si">}</span><span class="s1"> != M3 backend </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">executor</span> <span class="o">=</span> <span class="n">SamplerV2</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">executor</span> <span class="o">=</span> <span class="n">executor</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_thread</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">M3Error</span><span class="p">(</span><span class="s2">&quot;Calibration currently in progress.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">,</span> <span class="n">rm</span><span class="o">.</span><span class="n">RunningManBackend</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">runtime_mode</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">set_mode</span><span class="p">(</span><span class="n">runtime_mode</span><span class="p">,</span> <span class="n">overwrite</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">get_mode</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">set_mode</span><span class="p">(</span><span class="s2">&quot;batch&quot;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">qubits</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">qubits</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_qubits</span><span class="p">)</span>
             <span class="c1"># Remove faulty qubits if any</span>
@@ -525,7 +494,8 @@
             <span class="n">loaded_data</span> <span class="o">=</span> <span class="n">orjson</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">fd</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">loaded_data</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">single_qubit_cals</span> <span class="o">=</span> <span class="p">[</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">cal</span><span class="p">)</span> <span class="k">if</span> <span class="n">cal</span> <span class="k">else</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">cal</span> <span class="ow">in</span> <span class="n">loaded_data</span><span class="p">[</span><span class="s2">&quot;cals&quot;</span><span class="p">]</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">cal</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="k">if</span> <span class="n">cal</span> <span class="k">else</span> <span class="kc">None</span>
+                    <span class="k">for</span> <span class="n">cal</span> <span class="ow">in</span> <span class="n">loaded_data</span><span class="p">[</span><span class="s2">&quot;cals&quot;</span><span class="p">]</span>
                 <span class="p">]</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">cal_timestamp</span> <span class="o">=</span> <span class="n">loaded_data</span><span class="p">[</span><span class="s2">&quot;timestamp&quot;</span><span class="p">]</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">cal_shots</span> <span class="o">=</span> <span class="n">loaded_data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;shots&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
@@ -534,7 +504,8 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">cal_timestamp</span> <span class="o">=</span> <span class="kc">None</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">cal_shots</span> <span class="o">=</span> <span class="kc">None</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">single_qubit_cals</span> <span class="o">=</span> <span class="p">[</span>
-                    <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">cal</span><span class="p">)</span> <span class="k">if</span> <span class="n">cal</span> <span class="k">else</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">cal</span> <span class="ow">in</span> <span class="n">loaded_data</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">cal</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="k">if</span> <span class="n">cal</span> <span class="k">else</span> <span class="kc">None</span>
+                    <span class="k">for</span> <span class="n">cal</span> <span class="ow">in</span> <span class="n">loaded_data</span>
                 <span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">faulty_qubits</span> <span class="o">=</span> <span class="n">_faulty_qubit_checker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">single_qubit_cals</span><span class="p">)</span></div>
 
@@ -638,8 +609,6 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">M3Error</span><span class="p">(</span><span class="s2">&quot;System is not set.  Use &#39;cals_from_file&#39;.&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">executor</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">executor</span> <span class="o">=</span> <span class="n">SamplerV2</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">single_qubit_cals</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">single_qubit_cals</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_qubits</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cal_shots</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -712,13 +681,7 @@
                 <span class="p">)</span>
 
         <span class="n">num_circs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">trans_qcs</span><span class="p">)</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">,</span> <span class="n">BackendV2</span><span class="p">):</span>
-            <span class="n">max_circuits</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">configuration</span><span class="p">(),</span> <span class="s2">&quot;max_circuits&quot;</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
-            <span class="c1"># Needed for https://github.com/Qiskit/qiskit-terra/issues/9947</span>
-            <span class="k">if</span> <span class="n">max_circuits</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">max_circuits</span> <span class="o">=</span> <span class="mi">300</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">M3Error</span><span class="p">(</span><span class="s2">&quot;Unknown backend type&quot;</span><span class="p">)</span>
+        <span class="n">max_circuits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">system_info</span><span class="p">[</span><span class="s2">&quot;max_circuits&quot;</span><span class="p">]</span>
         <span class="c1"># Determine the number of jobs required</span>
         <span class="n">num_jobs</span> <span class="o">=</span> <span class="n">ceil</span><span class="p">(</span><span class="n">num_circs</span> <span class="o">/</span> <span class="n">max_circuits</span><span class="p">)</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
@@ -730,16 +693,18 @@
         <span class="c1"># Get the slice length</span>
         <span class="n">circ_slice</span> <span class="o">=</span> <span class="n">ceil</span><span class="p">(</span><span class="n">num_circs</span> <span class="o">/</span> <span class="n">num_jobs</span><span class="p">)</span>
         <span class="n">circs_list</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">trans_qcs</span><span class="p">[</span><span class="n">kk</span> <span class="o">*</span> <span class="n">circ_slice</span><span class="p">:</span> <span class="p">(</span><span class="n">kk</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">circ_slice</span><span class="p">]</span>
+            <span class="n">trans_qcs</span><span class="p">[</span><span class="n">kk</span> <span class="o">*</span> <span class="n">circ_slice</span> <span class="p">:</span> <span class="p">(</span><span class="n">kk</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">circ_slice</span><span class="p">]</span>
             <span class="k">for</span> <span class="n">kk</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_jobs</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">trans_qcs</span><span class="p">[(</span><span class="n">num_jobs</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">circ_slice</span><span class="p">:]]</span>
+        <span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">trans_qcs</span><span class="p">[(</span><span class="n">num_jobs</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">circ_slice</span> <span class="p">:]]</span>
         <span class="c1"># Do job submission here</span>
         <span class="n">jobs</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rep_delay</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">executor</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">execution</span><span class="o">.</span><span class="n">rep_delay</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rep_delay</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">executor</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">environment</span><span class="o">.</span><span class="n">job_tags</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;M3 calibration&quot;</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">circs</span> <span class="ow">in</span> <span class="n">circs_list</span><span class="p">:</span>
-            <span class="n">_job</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">executor</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">circs</span><span class="p">,</span> <span class="n">shots</span><span class="o">=</span><span class="n">shots</span><span class="p">)</span>
+            <span class="n">_job</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+                <span class="n">circs</span><span class="p">,</span>
+                <span class="n">shots</span><span class="o">=</span><span class="n">shots</span><span class="p">,</span>
+                <span class="n">rep_delay</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rep_delay</span><span class="p">,</span>
+                <span class="n">job_tags</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;M3 calibration&quot;</span><span class="p">],</span>
+            <span class="p">)</span>
             <span class="n">jobs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_job</span><span class="p">)</span>
 
         <span class="c1"># Execute job and cal building in new thread.</span>
@@ -765,7 +730,7 @@
         <span class="n">distance</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">method</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
         <span class="n">max_iter</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
-        <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span>
+        <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">,</span>
         <span class="n">return_mitigation_overhead</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">details</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
@@ -777,7 +742,7 @@
 <span class="sd">            distance (int): Distance to correct for. Default=num_bits</span>
 <span class="sd">            method (str): Solution method: &#39;auto&#39;, &#39;direct&#39; or &#39;iterative&#39;.</span>
 <span class="sd">            max_iter (int): Max. number of iterations, Default=25.</span>
-<span class="sd">            tol (float): Convergence tolerance of iterative method, Default=1e-5.</span>
+<span class="sd">            tol (float): Convergence tolerance of iterative method, Default=1e-4.</span>
 <span class="sd">            return_mitigation_overhead (bool): Returns the mitigation overhead, default=False.</span>
 <span class="sd">            details (bool): Return extra info, default=False.</span>
 
@@ -871,7 +836,7 @@
         <span class="n">distance</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">method</span><span class="o">=</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span>
         <span class="n">max_iter</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
-        <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span>
+        <span class="n">tol</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span>
         <span class="n">return_mitigation_overhead</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">details</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">):</span>
@@ -883,7 +848,7 @@
 <span class="sd">            distance (int): Distance to correct for. Default=num_bits</span>
 <span class="sd">            method (str): Solution method: &#39;auto&#39;, &#39;direct&#39; or &#39;iterative&#39;.</span>
 <span class="sd">            max_iter (int): Max. number of iterations, Default=25.</span>
-<span class="sd">            tol (float): Convergence tolerance of iterative method, Default=1e-5.</span>
+<span class="sd">            tol (float): Convergence tolerance of iterative method, Default=1e-3.</span>
 <span class="sd">            return_mitigation_overhead (bool): Returns the mitigation overhead, default=False.</span>
 <span class="sd">            details (bool): Return extra info, default=False.</span>
 
@@ -897,10 +862,12 @@
         <span class="n">counts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">counts</span><span class="p">)</span>
         <span class="n">shots</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">counts</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
 
-        <span class="c1"># If distance is None, then assume max distance.</span>
+        <span class="c1"># If distance is None, then assume min(num_bits, 3).</span>
         <span class="n">num_bits</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">qubits</span><span class="p">)</span>
         <span class="n">num_elems</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">counts</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">distance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">distance</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">num_bits</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">distance</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>  <span class="c1"># shortcut for setting max distance</span>
             <span class="n">distance</span> <span class="o">=</span> <span class="n">num_bits</span>
 
         <span class="c1"># check if len of bitstrings does not equal number of qubits passed.</span>
@@ -936,8 +903,8 @@
 
         <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;direct&quot;</span><span class="p">:</span>
             <span class="n">st</span> <span class="o">=</span> <span class="n">perf_counter</span><span class="p">()</span>
-            <span class="n">mit_counts</span><span class="p">,</span> <span class="n">col_norms</span><span class="p">,</span> <span class="n">gamma</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_direct_solver</span><span class="p">(</span>
-                <span class="n">counts</span><span class="p">,</span> <span class="n">qubits</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">return_mitigation_overhead</span>
+            <span class="n">mit_counts</span><span class="p">,</span> <span class="n">col_norms</span><span class="p">,</span> <span class="n">gamma</span> <span class="o">=</span> <span class="n">direct_solve</span><span class="p">(</span>
+                <span class="bp">self</span><span class="p">,</span> <span class="n">counts</span><span class="p">,</span> <span class="n">qubits</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">return_mitigation_overhead</span>
             <span class="p">)</span>
             <span class="n">dur</span> <span class="o">=</span> <span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">st</span>
             <span class="n">mit_counts</span><span class="o">.</span><span class="n">shots</span> <span class="o">=</span> <span class="n">shots</span>
@@ -957,7 +924,8 @@
 
             <span class="k">if</span> <span class="n">details</span><span class="p">:</span>
                 <span class="n">st</span> <span class="o">=</span> <span class="n">perf_counter</span><span class="p">()</span>
-                <span class="n">mit_counts</span><span class="p">,</span> <span class="n">col_norms</span><span class="p">,</span> <span class="n">gamma</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_matvec_solver</span><span class="p">(</span>
+                <span class="n">mit_counts</span><span class="p">,</span> <span class="n">col_norms</span><span class="p">,</span> <span class="n">gamma</span> <span class="o">=</span> <span class="n">iterative_solver</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="p">,</span>
                     <span class="n">counts</span><span class="p">,</span>
                     <span class="n">qubits</span><span class="p">,</span>
                     <span class="n">distance</span><span class="p">,</span>
@@ -976,16 +944,18 @@
                 <span class="n">info</span><span class="p">[</span><span class="s2">&quot;col_norms&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">col_norms</span>
                 <span class="k">return</span> <span class="n">mit_counts</span><span class="p">,</span> <span class="n">info</span>
             <span class="c1"># pylint: disable=unbalanced-tuple-unpacking</span>
-            <span class="n">mit_counts</span><span class="p">,</span> <span class="n">gamma</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_matvec_solver</span><span class="p">(</span>
+            <span class="n">mit_counts</span><span class="p">,</span> <span class="n">gamma</span> <span class="o">=</span> <span class="n">iterative_solver</span><span class="p">(</span>
+                <span class="bp">self</span><span class="p">,</span>
                 <span class="n">counts</span><span class="p">,</span>
                 <span class="n">qubits</span><span class="p">,</span>
                 <span class="n">distance</span><span class="p">,</span>
                 <span class="n">tol</span><span class="p">,</span>
                 <span class="n">max_iter</span><span class="p">,</span>
                 <span class="mi">0</span><span class="p">,</span>
-                <span class="kc">None</span><span class="p">,</span>
+                <span class="n">callback</span><span class="p">,</span>
                 <span class="n">return_mitigation_overhead</span><span class="p">,</span>
             <span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of GMRES iterations: </span><span class="si">{</span><span class="n">iter_count</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="n">mit_counts</span><span class="o">.</span><span class="n">shots</span> <span class="o">=</span> <span class="n">shots</span>
             <span class="k">if</span> <span class="n">gamma</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">mit_counts</span><span class="o">.</span><span class="n">mitigation_overhead</span> <span class="o">=</span> <span class="n">gamma</span> <span class="o">*</span> <span class="n">gamma</span>
@@ -1012,116 +982,8 @@
 <span class="sd">            M3Error: If bit-string length does not match passed number</span>
 <span class="sd">                     of qubits.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">counts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">counts</span><span class="p">)</span>
-        <span class="c1"># If distance is None, then assume max distance.</span>
-        <span class="n">num_bits</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">qubits</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">distance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">distance</span> <span class="o">=</span> <span class="n">num_bits</span>
+        <span class="k">return</span> <span class="n">cal_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">counts</span><span class="p">,</span> <span class="n">qubits</span><span class="p">,</span> <span class="n">distance</span><span class="p">)</span></div>
 
-        <span class="c1"># check if len of bitstrings does not equal number of qubits passed.</span>
-        <span class="n">bitstring_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">counts</span><span class="p">)))</span>
-        <span class="k">if</span> <span class="n">bitstring_len</span> <span class="o">!=</span> <span class="n">num_bits</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">M3Error</span><span class="p">(</span>
-                <span class="s2">&quot;Bitstring length (</span><span class="si">{}</span><span class="s2">) does not match&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">bitstring_len</span><span class="p">)</span>
-                <span class="o">+</span> <span class="s2">&quot; number of qubits (</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">num_bits</span><span class="p">)</span>
-            <span class="p">)</span>
-
-        <span class="n">cals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_form_cals</span><span class="p">(</span><span class="n">qubits</span><span class="p">)</span>
-        <span class="n">A</span><span class="p">,</span> <span class="n">counts</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_reduced_cal_matrix</span><span class="p">(</span><span class="n">counts</span><span class="p">,</span> <span class="n">cals</span><span class="p">,</span> <span class="n">num_bits</span><span class="p">,</span> <span class="n">distance</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">A</span><span class="p">,</span> <span class="n">counts</span></div>
-
-
-    <span class="k">def</span> <span class="nf">_direct_solver</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">counts</span><span class="p">,</span> <span class="n">qubits</span><span class="p">,</span> <span class="n">distance</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_mitigation_overhead</span><span class="o">=</span><span class="kc">False</span>
-    <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply the mitigation using direct LU factorization.</span>
-
-<span class="sd">        Parameters:</span>
-<span class="sd">            counts (dict): Input counts dict.</span>
-<span class="sd">            qubits (int): Qubits over which to calibrate.</span>
-<span class="sd">            distance (int): Distance to correct for. Default=num_bits</span>
-<span class="sd">            return_mitigation_overhead (bool): Returns the mitigation overhead, default=False.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            QuasiDistribution: dict of Quasiprobabilites</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">cals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_form_cals</span><span class="p">(</span><span class="n">qubits</span><span class="p">)</span>
-        <span class="n">num_bits</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">qubits</span><span class="p">)</span>
-        <span class="n">A</span><span class="p">,</span> <span class="n">sorted_counts</span><span class="p">,</span> <span class="n">col_norms</span> <span class="o">=</span> <span class="n">_reduced_cal_matrix</span><span class="p">(</span>
-            <span class="n">counts</span><span class="p">,</span> <span class="n">cals</span><span class="p">,</span> <span class="n">num_bits</span><span class="p">,</span> <span class="n">distance</span>
-        <span class="p">)</span>
-        <span class="n">vec</span> <span class="o">=</span> <span class="n">counts_to_vector</span><span class="p">(</span><span class="n">sorted_counts</span><span class="p">)</span>
-        <span class="n">LU</span> <span class="o">=</span> <span class="n">la</span><span class="o">.</span><span class="n">lu_factor</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">check_finite</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="n">x</span> <span class="o">=</span> <span class="n">la</span><span class="o">.</span><span class="n">lu_solve</span><span class="p">(</span><span class="n">LU</span><span class="p">,</span> <span class="n">vec</span><span class="p">,</span> <span class="n">check_finite</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="n">gamma</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="n">return_mitigation_overhead</span><span class="p">:</span>
-            <span class="n">gamma</span> <span class="o">=</span> <span class="n">ainv_onenorm_est_lu</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">LU</span><span class="p">)</span>
-        <span class="n">out</span> <span class="o">=</span> <span class="n">vector_to_quasiprobs</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">sorted_counts</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">out</span><span class="p">,</span> <span class="n">col_norms</span><span class="p">,</span> <span class="n">gamma</span>
-
-    <span class="k">def</span> <span class="nf">_matvec_solver</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">counts</span><span class="p">,</span>
-        <span class="n">qubits</span><span class="p">,</span>
-        <span class="n">distance</span><span class="p">,</span>
-        <span class="n">tol</span><span class="o">=</span><span class="mf">1e-5</span><span class="p">,</span>
-        <span class="n">max_iter</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span>
-        <span class="n">details</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-        <span class="n">callback</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">return_mitigation_overhead</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute solution using GMRES and Jacobi preconditioning.</span>
-
-<span class="sd">        Parameters:</span>
-<span class="sd">            counts (dict): Input counts dict.</span>
-<span class="sd">            qubits (int): Qubits over which to calibrate.</span>
-<span class="sd">            tol (float): Tolerance to use.</span>
-<span class="sd">            max_iter (int): Maximum number of iterations to perform.</span>
-<span class="sd">            distance (int): Distance to correct for. Default=num_bits</span>
-<span class="sd">            details (bool): Return col norms.</span>
-<span class="sd">            callback (callable): Callback function to record iteration count.</span>
-<span class="sd">            return_mitigation_overhead (bool): Returns the mitigation overhead, default=False.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            QuasiDistribution: dict of Quasiprobabilites</span>
-
-<span class="sd">        Raises:</span>
-<span class="sd">            M3Error: Solver did not converge.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">cals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_form_cals</span><span class="p">(</span><span class="n">qubits</span><span class="p">)</span>
-        <span class="n">M</span> <span class="o">=</span> <span class="n">M3MatVec</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">counts</span><span class="p">),</span> <span class="n">cals</span><span class="p">,</span> <span class="n">distance</span><span class="p">)</span>
-        <span class="n">L</span> <span class="o">=</span> <span class="n">spla</span><span class="o">.</span><span class="n">LinearOperator</span><span class="p">(</span>
-            <span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">num_elems</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">num_elems</span><span class="p">),</span> <span class="n">matvec</span><span class="o">=</span><span class="n">M</span><span class="o">.</span><span class="n">matvec</span><span class="p">,</span> <span class="n">rmatvec</span><span class="o">=</span><span class="n">M</span><span class="o">.</span><span class="n">rmatvec</span>
-        <span class="p">)</span>
-        <span class="n">diags</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">get_diagonal</span><span class="p">()</span>
-
-        <span class="k">def</span> <span class="nf">precond_matvec</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-            <span class="n">out</span> <span class="o">=</span> <span class="n">x</span> <span class="o">/</span> <span class="n">diags</span>
-            <span class="k">return</span> <span class="n">out</span>
-
-        <span class="n">P</span> <span class="o">=</span> <span class="n">spla</span><span class="o">.</span><span class="n">LinearOperator</span><span class="p">((</span><span class="n">M</span><span class="o">.</span><span class="n">num_elems</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">num_elems</span><span class="p">),</span> <span class="n">precond_matvec</span><span class="p">)</span>
-        <span class="n">vec</span> <span class="o">=</span> <span class="n">counts_to_vector</span><span class="p">(</span><span class="n">M</span><span class="o">.</span><span class="n">sorted_counts</span><span class="p">)</span>
-        <span class="n">out</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="n">gmres</span><span class="p">(</span>
-            <span class="n">L</span><span class="p">,</span>
-            <span class="n">vec</span><span class="p">,</span>
-            <span class="n">rtol</span><span class="o">=</span><span class="n">tol</span><span class="p">,</span>
-            <span class="n">atol</span><span class="o">=</span><span class="n">tol</span><span class="p">,</span>
-            <span class="n">maxiter</span><span class="o">=</span><span class="n">max_iter</span><span class="p">,</span>
-            <span class="n">M</span><span class="o">=</span><span class="n">P</span><span class="p">,</span>
-            <span class="n">callback</span><span class="o">=</span><span class="n">callback</span><span class="p">,</span>
-            <span class="n">callback_type</span><span class="o">=</span><span class="s2">&quot;legacy&quot;</span><span class="p">,</span>
-        <span class="p">)</span>
-        <span class="k">if</span> <span class="n">error</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">M3Error</span><span class="p">(</span><span class="s2">&quot;GMRES did not converge: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">error</span><span class="p">))</span>
-
-        <span class="n">gamma</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="k">if</span> <span class="n">return_mitigation_overhead</span><span class="p">:</span>
-            <span class="n">gamma</span> <span class="o">=</span> <span class="n">ainv_onenorm_est_iter</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="n">max_iter</span><span class="p">)</span>
-
-        <span class="n">quasi</span> <span class="o">=</span> <span class="n">vector_to_quasiprobs</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">sorted_counts</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">details</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">quasi</span><span class="p">,</span> <span class="n">M</span><span class="o">.</span><span class="n">get_col_norms</span><span class="p">(),</span> <span class="n">gamma</span>
-        <span class="k">return</span> <span class="n">quasi</span><span class="p">,</span> <span class="n">gamma</span>
 
 <div class="viewcode-block" id="M3Mitigation.readout_fidelity">
 <a class="viewcode-back" href="../../stubs/mthree.M3Mitigation.html#mthree.M3Mitigation.readout_fidelity">[docs]</a>
@@ -1191,14 +1053,14 @@
             <span class="n">mit</span><span class="o">.</span><span class="n">_job_error</span> <span class="o">=</span> <span class="n">error</span>
             <span class="k">return</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">_counts</span> <span class="o">=</span> <span class="p">[</span><span class="n">rr</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">c</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span> <span class="k">for</span> <span class="n">rr</span> <span class="ow">in</span> <span class="n">res</span><span class="p">]</span>
+            <span class="n">_counts</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
             <span class="c1"># _counts can be a list or a dict (if only one circuit was executed within the job)</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">_counts</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
                 <span class="n">counts</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">_counts</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">counts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_counts</span><span class="p">)</span>
             <span class="c1"># attach timestamp</span>
-            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">job</span><span class="p">,</span> <span class="s1">&#39;metrics&#39;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">job</span><span class="p">,</span> <span class="s2">&quot;metrics&quot;</span><span class="p">):</span>
                 <span class="n">timestamp</span> <span class="o">=</span> <span class="n">job</span><span class="o">.</span><span class="n">metrics</span><span class="p">()[</span><span class="s2">&quot;timestamps&quot;</span><span class="p">][</span><span class="s2">&quot;running&quot;</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">timestamp</span> <span class="o">=</span> <span class="kc">None</span>
@@ -1218,7 +1080,7 @@
     <span class="n">bad_list</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">if</span> <span class="n">mit</span><span class="o">.</span><span class="n">cal_method</span> <span class="o">==</span> <span class="s2">&quot;independent&quot;</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">qubit</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">qubits</span><span class="p">):</span>
-            <span class="n">mit</span><span class="o">.</span><span class="n">single_qubit_cals</span><span class="p">[</span><span class="n">qubit</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+            <span class="n">mit</span><span class="o">.</span><span class="n">single_qubit_cals</span><span class="p">[</span><span class="n">qubit</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
             <span class="c1"># Counts 0 has all P00, P10 data, so do that here</span>
             <span class="n">prep0_counts</span> <span class="o">=</span> <span class="n">counts</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">idx</span><span class="p">]</span>
             <span class="n">P10</span> <span class="o">=</span> <span class="n">prep0_counts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">/</span> <span class="n">mit</span><span class="o">.</span><span class="n">cal_shots</span>
@@ -1235,7 +1097,7 @@
         <span class="n">prep0_counts</span> <span class="o">=</span> <span class="n">counts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">prep1_counts</span> <span class="o">=</span> <span class="n">counts</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">qubit</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">qubits</span><span class="p">):</span>
-            <span class="n">mit</span><span class="o">.</span><span class="n">single_qubit_cals</span><span class="p">[</span><span class="n">qubit</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+            <span class="n">mit</span><span class="o">.</span><span class="n">single_qubit_cals</span><span class="p">[</span><span class="n">qubit</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
             <span class="n">count_vals</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">index</span> <span class="o">=</span> <span class="n">num_cal_qubits</span> <span class="o">-</span> <span class="n">idx</span> <span class="o">-</span> <span class="mi">1</span>
             <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">prep0_counts</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -1255,11 +1117,11 @@
                 <span class="n">bad_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">qubit</span><span class="p">)</span>
     <span class="c1"># balanced calibration</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">cals</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span> <span class="k">for</span> <span class="n">kk</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_cal_qubits</span><span class="p">)]</span>
+        <span class="n">cals</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="k">for</span> <span class="n">kk</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_cal_qubits</span><span class="p">)]</span>
 
         <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">counts</span><span class="p">):</span>
             <span class="n">target</span> <span class="o">=</span> <span class="n">cal_strings</span><span class="p">[</span><span class="n">idx</span><span class="p">][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-            <span class="n">good_prep</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_cal_qubits</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+            <span class="n">good_prep</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_cal_qubits</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
             <span class="c1"># divide by 2 since total shots is double</span>
             <span class="n">denom</span> <span class="o">=</span> <span class="n">mit</span><span class="o">.</span><span class="n">_balanced_shots</span>
 
@@ -1321,7 +1183,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/09/24</div>
+              Last updated on 2024/10/23</div>
           </div>
           <div class="right-details">
             
@@ -1338,7 +1200,7 @@
   </div>
 </div><script src="../../_static/jquery.js?v=5d32c60e"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../../_static/documentation_options.js?v=dfec817d"></script>
+    <script src="../../_static/documentation_options.js?v=69ff2ef9"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/thebelab-helper.js"></script>

@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Distributions" href="../apidocs/classes.html" /><link rel="prev" title="Mitigation classes" href="../apidocs/main.html" />
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2024.01.29 -->
-        <title>mthree.M3Mitigation - Mthree 2.7.0</title>
+        <title>mthree.M3Mitigation - Mthree 2.8.0</title>
       <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/qiskit-sphinx-theme.css?v=fe84956c" />
@@ -143,7 +143,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">Mthree 2.7.0</div></a>
+      <a href="../index.html"><div class="brand">Mthree 2.8.0</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -170,7 +170,7 @@
     </div>
   </a>
   
-  <span class="sidebar-brand-text">Mthree 2.7.0</span>
+  <span class="sidebar-brand-text">Mthree 2.8.0</span>
 </div><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
@@ -178,9 +178,10 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
-<li class="toctree-l1"><a class="reference internal" href="../index.html">mthree (2.7.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">mthree (2.8.0)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../papers.html">Papers using M3</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
 <ul>
@@ -372,7 +373,7 @@ is turned on (assuming reasonable error rates).</p></li>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="mthree.M3Mitigation.apply_correction">
-<span class="sig-name descname"><span class="pre">apply_correction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">counts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_mitigation_overhead</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">details</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mthree/mitigation.html#M3Mitigation.apply_correction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mthree.M3Mitigation.apply_correction" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">apply_correction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">counts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qubits</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_mitigation_overhead</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">details</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mthree/mitigation.html#M3Mitigation.apply_correction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mthree.M3Mitigation.apply_correction" title="Link to this definition">¶</a></dt>
 <dd><p>Applies correction to given counts.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -382,7 +383,7 @@ is turned on (assuming reasonable error rates).</p></li>
 <li><p><strong>distance</strong> (<em>int</em>) – Distance to correct for. Default=num_bits</p></li>
 <li><p><strong>method</strong> (<em>str</em>) – Solution method: ‘auto’, ‘direct’ or ‘iterative’.</p></li>
 <li><p><strong>max_iter</strong> (<em>int</em>) – Max. number of iterations, Default=25.</p></li>
-<li><p><strong>tol</strong> (<em>float</em>) – Convergence tolerance of iterative method, Default=1e-5.</p></li>
+<li><p><strong>tol</strong> (<em>float</em>) – Convergence tolerance of iterative method, Default=1e-4.</p></li>
 <li><p><strong>return_mitigation_overhead</strong> (<em>bool</em>) – Returns the mitigation overhead, default=False.</p></li>
 <li><p><strong>details</strong> (<em>bool</em>) – Return extra info, default=False.</p></li>
 </ul>
@@ -436,7 +437,7 @@ earlier run.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="mthree.M3Mitigation.cals_from_system">
-<span class="sig-name descname"><span class="pre">cals_from_system</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qubits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shots</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_reset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rep_delay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cals_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">async_cal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mthree/mitigation.html#M3Mitigation.cals_from_system"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mthree.M3Mitigation.cals_from_system" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">cals_from_system</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qubits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shots</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_reset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rep_delay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cals_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">async_cal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">runtime_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mthree/mitigation.html#M3Mitigation.cals_from_system"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mthree.M3Mitigation.cals_from_system" title="Link to this definition">¶</a></dt>
 <dd><p>Grab calibration data from system.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -448,8 +449,8 @@ earlier run.</p>
 <li><p><strong>initial_reset</strong> (<em>bool</em>) – Use resets at beginning of calibration circuits, default=False.</p></li>
 <li><p><strong>rep_delay</strong> (<em>float</em>) – Delay between circuits on IBM Quantum backends.</p></li>
 <li><p><strong>cals_file</strong> (<em>str</em>) – Output path to write JSON calibration data to.</p></li>
-<li><p><strong>async_cal</strong> (<em>bool</em>) – Do calibration async in a separate thread, default is False.</p></li>
-<li><p><strong>mode</strong> (<em>Batch</em><em> or </em><em>Session</em>) – Mode to run jobs in, default=None</p></li>
+<li><p><strong>async_cal</strong> (<em>bool</em>) – Do calibration async in a separate thread, default is True.</p></li>
+<li><p><strong>runtime_mode</strong> (<em>Batch</em><em> or </em><em>Session</em>) – Mode to run jobs in if using IBM system, default=None</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -611,7 +612,7 @@ earlier run.</p>
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/09/24</div>
+              Last updated on 2024/10/23</div>
           </div>
           <div class="right-details">
             
@@ -664,7 +665,7 @@ earlier run.</p>
   </div>
 </div><script src="../_static/jquery.js?v=5d32c60e"></script>
     <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../_static/documentation_options.js?v=dfec817d"></script>
+    <script src="../_static/documentation_options.js?v=69ff2ef9"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>

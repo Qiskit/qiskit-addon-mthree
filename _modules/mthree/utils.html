@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2024.01.29 -->
-        <title>mthree.utils - Mthree 2.7.0</title>
+        <title>mthree.utils - Mthree 2.8.0</title>
       <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/qiskit-sphinx-theme.css?v=fe84956c" />
@@ -143,7 +143,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">Mthree 2.7.0</div></a>
+      <a href="../../index.html"><div class="brand">Mthree 2.8.0</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -170,7 +170,7 @@
     </div>
   </a>
   
-  <span class="sidebar-brand-text">Mthree 2.7.0</span>
+  <span class="sidebar-brand-text">Mthree 2.8.0</span>
 </div><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
@@ -178,9 +178,10 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../index.html">mthree (2.7.0)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">mthree (2.8.0)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../papers.html">Papers using M3</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">User guide</span></p>
 <ul>
@@ -289,9 +290,7 @@
 <span class="sd">   marginal_distribution</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">scipy.sparse.linalg</span>
 
 <span class="kn">from</span> <span class="nn">qiskit.result</span> <span class="kn">import</span> <span class="n">marginal_distribution</span> <span class="k">as</span> <span class="n">marg_dist</span>
 <span class="kn">from</span> <span class="nn">mthree.exceptions</span> <span class="kn">import</span> <span class="n">M3Error</span>
@@ -301,22 +300,6 @@
     <span class="n">QuasiCollection</span><span class="p">,</span>
     <span class="n">ProbCollection</span><span class="p">,</span>
 <span class="p">)</span>
-
-<span class="c1"># This dynamic switch on keyword arguments in &#39;gmres&#39; can be removed once Scipy 1.11 is</span>
-<span class="c1"># the minimum supported version.</span>
-
-<span class="n">SCIPY_MAJOR</span><span class="p">,</span> <span class="n">SCIPY_MINOR</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">__version__</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-<span class="k">if</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">SCIPY_MAJOR</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">SCIPY_MINOR</span><span class="p">))</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">):</span>
-    <span class="n">gmres</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">gmres</span>
-<span class="k">else</span><span class="p">:</span>
-
-    <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">gmres</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">gmres</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compatibility wrapper around Scipy&#39;s `gmres` to convert the new-style &#39;rtol&#39;</span>
-<span class="sd">        argument into the old-style &#39;tol&#39; for old SciPys.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="s2">&quot;rtol&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-            <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;tol&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;rtol&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">gmres</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="final_measurement_mapping">
@@ -502,11 +485,11 @@
         <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
                 <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ProbDistribution</span><span class="p">(</span><span class="n">it</span><span class="p">)</span><span class="o">.</span><span class="n">expval</span><span class="p">(</span><span class="n">exp_ops</span><span class="p">[</span><span class="n">idx</span><span class="p">]))</span>
-            <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
                 <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ProbDistribution</span><span class="p">(</span><span class="n">it</span><span class="p">)</span><span class="o">.</span><span class="n">stddev</span><span class="p">())</span>
-            <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
                 <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ProbDistribution</span><span class="p">(</span><span class="n">it</span><span class="p">)</span><span class="o">.</span><span class="n">expval_and_stddev</span><span class="p">(</span><span class="n">exp_ops</span><span class="p">[</span><span class="n">idx</span><span class="p">]))</span>
@@ -515,7 +498,7 @@
         <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
                 <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">it</span><span class="o">.</span><span class="n">expval</span><span class="p">(</span><span class="n">exp_ops</span><span class="p">[</span><span class="n">idx</span><span class="p">]))</span>
-            <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">it</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
                 <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">it</span><span class="o">.</span><span class="n">stddev</span><span class="p">())</span>
@@ -619,7 +602,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">num_bitstrings</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">counts</span><span class="p">)</span>
     <span class="n">shots</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">counts</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-    <span class="n">vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_bitstrings</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_bitstrings</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
     <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">counts</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
         <span class="n">vec</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span> <span class="o">/</span> <span class="n">shots</span>
@@ -660,7 +643,7 @@
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/09/24</div>
+              Last updated on 2024/10/23</div>
           </div>
           <div class="right-details">
             
@@ -677,7 +660,7 @@
   </div>
 </div><script src="../../_static/jquery.js?v=5d32c60e"></script>
     <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="../../_static/documentation_options.js?v=dfec817d"></script>
+    <script src="../../_static/documentation_options.js?v=69ff2ef9"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/thebelab-helper.js"></script>
