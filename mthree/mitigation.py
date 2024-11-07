@@ -774,7 +774,10 @@ def _job_thread(jobs, mit, qubits, num_cal_qubits, cal_strings):
         timestamp = timestamp.isoformat()
     # Go to UTC times because we are going to use this for
     # resultsDB storage as well
-    dt = datetime.datetime.fromisoformat(timestamp)
+    try:
+        dt = datetime.datetime.fromisoformat(timestamp)
+    except ValueError:
+        dt = datetime.datetime.strptime(timestamp, "%Y-%m-%dT%H:%M:%S.%fZ")
     dt_utc = dt.astimezone(datetime.timezone.utc)
     mit.cal_timestamp = dt_utc.isoformat()
     # A list of qubits with bad meas cals
