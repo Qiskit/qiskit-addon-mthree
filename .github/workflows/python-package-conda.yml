@@ -3,7 +3,7 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main]
+    branches: []
 jobs:
   conda-test:
     name: ${{ matrix.os }} using Py ${{ matrix.python-version }}
