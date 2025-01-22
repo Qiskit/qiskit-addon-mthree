@@ -3,7 +3,7 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-green.svg)](https://opensource.org/licenses/Apache-2.0)
 [![PyPI version](https://badge.fury.io/py/mthree.svg)](https://badge.fury.io/py/mthree)
 [![pypi](https://img.shields.io/pypi/dm/mthree.svg)](https://pypi.org/project/mthree/)
-![workflow](https://github.com/Qiskit-Partners/mthree/actions/workflows/python-package-conda.yml/badge.svg)
+![workflow](https://github.com/Qiskit/qiskit-addon-mthree/actions/workflows/python-package-conda.yml/badge.svg)
 
 Matrix-free Measurement Mitigation (M3).
 
@@ -11,7 +11,7 @@ M3 is a measurement mitigation technique that solves for corrected measurement p
 
 ## Documentation
 
-[Online Documentation @ Qiskit.org](https://qiskit.org/ecosystem/mthree/)
+[Online Documentation](https://qiskit.github.io/qiskit-addon-mthree/)
 
 ## Installation
 
