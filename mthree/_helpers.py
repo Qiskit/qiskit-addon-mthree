@@ -13,14 +13,13 @@
 """
 Helper functions
 """
-from qiskit.providers.backend import BackendV1
 
 
 def system_info(backend):
     """Return backend information needed by M3.
 
     Parameters:
-        backend (BackendV1 or BackendV2): A Qiskit backend
+        backend (BackendV2): A Qiskit backend
 
     Returns:
         dict: Backend information
@@ -28,10 +27,7 @@ def system_info(backend):
     info_dict = {}
     info_dict["inoperable_qubits"] = []
     config = backend.configuration()
-    if isinstance(backend, BackendV1):
-        name = backend.name()
-    else:
-        name = backend.name
+    name = backend.name
     info_dict["name"] = name
     info_dict["num_qubits"] = config.num_qubits
     _max_shots = config.max_shots
