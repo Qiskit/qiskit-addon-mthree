@@ -27,7 +27,10 @@ def system_info(backend):
     info_dict = {}
     info_dict["inoperable_qubits"] = []
     config = backend.configuration()
-    name = backend.name
+    if backend.version == 1:
+        name = backend.name()
+    else:
+        name = backend.name
     info_dict["name"] = name
     info_dict["num_qubits"] = config.num_qubits
     _max_shots = config.max_shots
