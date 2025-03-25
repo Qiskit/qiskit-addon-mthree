@@ -19,7 +19,7 @@ def system_info(backend):
     """Return backend information needed by M3.
 
     Parameters:
-        backend (BackendV2): A Qiskit backend
+        backend (BackendV1 or BackendV2): A Qiskit backend
 
     Returns:
         dict: Backend information
