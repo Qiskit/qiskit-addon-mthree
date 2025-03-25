@@ -13,7 +13,6 @@
 """
 Helper functions
 """
-from qiskit.providers.backend import BackendV1
 
 
 def system_info(backend):
@@ -28,7 +27,7 @@ def system_info(backend):
     info_dict = {}
     info_dict["inoperable_qubits"] = []
     config = backend.configuration()
-    if isinstance(backend, BackendV1):
+    if backend.version == 1:
         name = backend.name()
     else:
         name = backend.name
