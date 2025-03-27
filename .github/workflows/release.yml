@@ -46,30 +46,10 @@ jobs:
           name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
           path: ./wheelhouse/*.whl
   
-  make_sdist:
-    name: Make Sdist
-    needs: [build_wheels]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        name: Install Python
-        with:
-          python-version: '3.11'
-      - name: Install Deps
-        run: pip install -U twine cython numpy
-      - name: Build Artifacts
-        run: |
-          python setup.py sdist
-        shell: bash
-      - uses: actions/upload-artifact@v4
-        with:
-          name: cibw-sdist
-          path: dist/*.tar.gz
 
   upload_all:
     name: Upload to PyPi
-    needs: [build_wheels, make_sdist]
+    needs: [build_wheels]
     environment: release
     permissions:
       id-token: write
