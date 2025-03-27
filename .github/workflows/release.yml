@@ -1,8 +1,7 @@
 name: Release Artifacts
 on:
-  push:
-    tags:
-      - '*'
+  pull_request:
+    branches: []
 
 jobs:
   build_wheels:
@@ -10,10 +9,15 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest, macos-latest]
 
     steps:
       - uses: actions/checkout@v4
+      - name: Set up QEMU
+        if: runner.os == 'Linux' && runner.arch == 'X64'
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: arm64
       - uses: actions/setup-python@v5
         name: Install Python
         with:
@@ -23,11 +27,11 @@ jobs:
         env:
           CIBW_SKIP: "cp36-* cp37-* cp38-* pp* *musl* *i686"
           CIBW_TEST_SKIP: "*-macosx_arm64 *-macosx_universal2:arm64 *-win32 *-win_amd64 *-manylinux_i686 cp310-manylinux*"
-          CIBW_MANYLINUX_X86_64_IMAGE: quay.io/pypamanylinux_2_34_x86_64:latest
+          CIBW_MANYLINUX_X86_64_IMAGE: quay.io/pypa/manylinux_2_34_x86_64:latest
           CIBW_MANYLINUX_AARCH64_IMAGE: quay.io/pypa/manylinux_2_34_aarch64:latest
-          CIBW_ARCHS_LINUX: x86_64 aarch64
+          CIBW_ARCHS_LINUX: ${{ runner.arch == 'X64' && 'x86_64' || 'aarch64' }}
           CIBW_ARCHS_WINDOWS: AMD64
-          CIBW_ARCHS_MACOS: x86_64 universal2 arm64
+          CIBW_ARCHS_MACOS: x86_64 arm64
           CIBW_TEST_REQUIRES: pytest qiskit-aer setuptools
           CIBW_TEST_COMMAND_LINUX: pytest -p no:warnings /mthree_test
           CIBW_TEST_COMMAND_WINDOWS: pytest -p no:warnings C:\Users\RUNNER~1\AppData\Local\Temp\mthree_test
