@@ -6,9 +6,9 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Converting to probabilites" href="probs.html" /><link rel="prev" title="Error analysis" href="error.html" />
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2024.01.29 -->
-        <title>Low-weight observables (Marginals) - Mthree 2.8.1</title>
+        <title>Low-weight observables (Marginals) - Mthree 3.0.0</title>
       <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-sphinx-theme.css?v=fe84956c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-ecosystem.css?v=745c5aa7" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
@@ -143,7 +143,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">Mthree 2.8.1</div></a>
+      <a href="index.html"><div class="brand">Mthree 3.0.0</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -170,7 +170,7 @@
     </div>
   </a>
   
-  <span class="sidebar-brand-text">Mthree 2.8.1</span>
+  <span class="sidebar-brand-text">Mthree 3.0.0</span>
 </div><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
@@ -178,7 +178,7 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
-<li class="toctree-l1"><a class="reference internal" href="index.html">mthree (2.8.1)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">mthree (3.0.0)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="citing.html">Citing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="papers.html">Papers using M3</a></li>
@@ -275,9 +275,9 @@ is an example of how to use M3 to marginalize and correct over the smaller distr
 <p>Consider the following circuit that we would like to evaluate:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">qiskit</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">qiskit_ibm_runtime.fake_provider</span> <span class="kn">import</span> <span class="n">FakeGuadalupeV2</span>
-<span class="kn">import</span> <span class="nn">mthree</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_ibm_runtime.fake_provider</span><span class="w"> </span><span class="kn">import</span> <span class="n">FakeGuadalupeV2</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">mthree</span>
 
 <span class="n">N</span> <span class="o">=</span> <span class="mi">6</span>
 <span class="n">qc</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
@@ -338,14 +338,14 @@ e.g. for the operator <span class="math notranslate nohighlight">\(\langle ZIIZI
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;011&#39;: 779,
- &#39;000&#39;: 192,
- &#39;110&#39;: 304,
- &#39;111&#39;: 5984,
- &#39;101&#39;: 1588,
- &#39;010&#39;: 38,
- &#39;001&#39;: 560,
- &#39;100&#39;: 555}
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;010&#39;: 42,
+ &#39;110&#39;: 283,
+ &#39;111&#39;: 6094,
+ &#39;000&#39;: 179,
+ &#39;011&#39;: 762,
+ &#39;100&#39;: 515,
+ &#39;001&#39;: 521,
+ &#39;101&#39;: 1604}
 </pre></div>
 </div>
 </div>
@@ -358,14 +358,14 @@ e.g. for the operator <span class="math notranslate nohighlight">\(\langle ZIIZI
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;011&#39;: 779,
- &#39;000&#39;: 192,
- &#39;110&#39;: 304,
- &#39;111&#39;: 5984,
- &#39;101&#39;: 1588,
- &#39;010&#39;: 38,
- &#39;001&#39;: 560,
- &#39;100&#39;: 555}
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;010&#39;: 42,
+ &#39;110&#39;: 283,
+ &#39;111&#39;: 6094,
+ &#39;000&#39;: 179,
+ &#39;011&#39;: 762,
+ &#39;100&#39;: 515,
+ &#39;001&#39;: 521,
+ &#39;101&#39;: 1604}
 </pre></div>
 </div>
 </div>
@@ -398,14 +398,14 @@ We can pass a mapping to <cite>marginal_distribution</cite> and get such a reduc
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;000&#39;: np.float32(0.016046563),
- &#39;001&#39;: np.float32(0.052749895),
- &#39;010&#39;: np.float32(0.00043373532),
- &#39;011&#39;: np.float32(0.070392676),
- &#39;100&#39;: np.float32(0.050239675),
- &#39;101&#39;: np.float32(0.14702217),
- &#39;110&#39;: np.float32(0.0060145305),
- &#39;111&#39;: np.float32(0.65710074)}
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;000&#39;: np.float32(0.014920278),
+ &#39;001&#39;: np.float32(0.04848415),
+ &#39;010&#39;: np.float32(0.0010202667),
+ &#39;011&#39;: np.float32(0.06725883),
+ &#39;100&#39;: np.float32(0.046293665),
+ &#39;101&#39;: np.float32(0.14849725),
+ &#39;110&#39;: np.float32(0.00380746),
+ &#39;111&#39;: np.float32(0.6697181)}
 </pre></div>
 </div>
 </div>
@@ -419,7 +419,7 @@ eigenvalues because the operator will be all <cite>Z</cite>’s:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>-0.5210480690002441
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>-0.5310323238372803
 </pre></div>
 </div>
 </div>
@@ -460,7 +460,7 @@ eigenvalues because the operator will be all <cite>Z</cite>’s:</p>
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/11/07</div>
+              Last updated on 2025/03/27</div>
           </div>
           <div class="right-details">
             
@@ -477,7 +477,7 @@ eigenvalues because the operator will be all <cite>Z</cite>’s:</p>
   </div>
 </div><script src="_static/jquery.js?v=5d32c60e"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="_static/documentation_options.js?v=cd87aae0"></script>
+    <script src="_static/documentation_options.js?v=acc74ff5"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>

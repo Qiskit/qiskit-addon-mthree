@@ -6,9 +6,9 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Grouped operators" href="grouped.html" /><link rel="prev" title="Mitigating sampling problems" href="sampling.html" />
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2024.01.29 -->
-        <title>Using distribution collections - Mthree 2.8.1</title>
+        <title>Using distribution collections - Mthree 3.0.0</title>
       <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-sphinx-theme.css?v=fe84956c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-ecosystem.css?v=745c5aa7" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
@@ -143,7 +143,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">Mthree 2.8.1</div></a>
+      <a href="index.html"><div class="brand">Mthree 3.0.0</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -170,7 +170,7 @@
     </div>
   </a>
   
-  <span class="sidebar-brand-text">Mthree 2.8.1</span>
+  <span class="sidebar-brand-text">Mthree 3.0.0</span>
 </div><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
@@ -178,7 +178,7 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
-<li class="toctree-l1"><a class="reference internal" href="index.html">mthree (2.8.1)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">mthree (3.0.0)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="citing.html">Citing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="papers.html">Papers using M3</a></li>
@@ -269,9 +269,9 @@
 <p>When you mitigate over multiple circuits the return object is a <a class="reference internal" href="stubs/mthree.classes.QuasiCollection.html#mthree.classes.QuasiCollection" title="mthree.classes.QuasiCollection"><code class="xref py py-class docutils literal notranslate"><span class="pre">mthree.classes.QuasiCollection</span></code></a></p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">qiskit</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">qiskit_ibm_runtime.fake_provider</span> <span class="kn">import</span> <span class="n">FakeCasablancaV2</span>
-<span class="kn">import</span> <span class="nn">mthree</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_ibm_runtime.fake_provider</span><span class="w"> </span><span class="kn">import</span> <span class="n">FakeCasablancaV2</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">mthree</span>
 
 <span class="n">qc</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
 <span class="n">qc</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">))</span>
@@ -310,8 +310,8 @@ a single one.  E.g. we can get the mitigation overhead of the whole collection</
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>array([1.797272 , 1.8033769, 1.8011448, 1.795828 , 1.8056048, 1.808096 ,
-       1.7802615, 1.8000494, 1.8094052, 1.7957922], dtype=float32)
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>array([1.8057809, 1.7998344, 1.794854 , 1.8044356, 1.7977172, 1.7929194,
+       1.791221 , 1.8050765, 1.7874779, 1.8009642], dtype=float32)
 </pre></div>
 </div>
 </div>
@@ -324,16 +324,16 @@ a single one.  E.g. we can get the mitigation overhead of the whole collection</
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[(0.043495744466781616, 0.02119712238221037),
- (0.008683472871780396, 0.021233092807751937),
- (0.037554770708084106, 0.021219948375164294),
- (0.04385194182395935, 0.02118860547630793),
- (0.03921884298324585, 0.021246204721316508),
- (0.014586120843887329, 0.02126085649645868),
- (0.02883651852607727, 0.021096572660324088),
- (0.0319560170173645, 0.02121349437767348),
- (0.016174226999282837, 0.021268552126708463),
- (0.010800004005432129, 0.02118839417741873)]
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[(0.0476345419883728, 0.02124724015176704),
+ (0.04975694417953491, 0.021212227327304614),
+ (0.04332289099693298, 0.021182858577604886),
+ (0.04009062051773071, 0.02123932464267371),
+ (0.07067936658859253, 0.021199748027359445),
+ (0.01496008038520813, 0.02117143949545417),
+ (0.027989208698272705, 0.021161409829817384),
+ (0.022048354148864746, 0.021243095609918217),
+ (0.026659131050109863, 0.021139287383494902),
+ (0.031759798526763916, 0.021218884822754743)]
 </pre></div>
 </div>
 </div>
@@ -374,7 +374,7 @@ a single one.  E.g. we can get the mitigation overhead of the whole collection</
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/11/07</div>
+              Last updated on 2025/03/27</div>
           </div>
           <div class="right-details">
             
@@ -391,7 +391,7 @@ a single one.  E.g. we can get the mitigation overhead of the whole collection</
   </div>
 </div><script src="_static/jquery.js?v=5d32c60e"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="_static/documentation_options.js?v=cd87aae0"></script>
+    <script src="_static/documentation_options.js?v=acc74ff5"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>

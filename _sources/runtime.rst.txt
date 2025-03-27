@@ -21,4 +21,4 @@ in `mthree.M3Mitigation.cals_from_system`.  For example:
     mit.cals_from_system(runtime_mode=batch); # This is where the Batch or Session goes
 
 
-Note that if no `runtime_mode` is set, and the passed system is an IBM backend, then jobs are submitted in `Batch` mode automatically.  This mode is NOT closed by default, allowing users to include additional jobs.  This mode can be accessed via `mode = mit.system.get_mode()`
+Note that if no `runtime_mode` is set, and the passed system is an IBM backend, then jobs are submitted in `Job` mode, i.e. independently, by default.

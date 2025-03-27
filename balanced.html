@@ -6,9 +6,9 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Advanced usage" href="advanced.html" /><link rel="prev" title="Utility functions" href="utils.html" />
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2024.01.29 -->
-        <title>Balanced calibrations - Mthree 2.8.1</title>
+        <title>Balanced calibrations - Mthree 3.0.0</title>
       <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-sphinx-theme.css?v=fe84956c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-ecosystem.css?v=745c5aa7" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
@@ -143,7 +143,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">Mthree 2.8.1</div></a>
+      <a href="index.html"><div class="brand">Mthree 3.0.0</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -170,7 +170,7 @@
     </div>
   </a>
   
-  <span class="sidebar-brand-text">Mthree 2.8.1</span>
+  <span class="sidebar-brand-text">Mthree 3.0.0</span>
 </div><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
@@ -178,7 +178,7 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
-<li class="toctree-l1"><a class="reference internal" href="index.html">mthree (2.8.1)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">mthree (3.0.0)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="citing.html">Citing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="papers.html">Papers using M3</a></li>
@@ -266,67 +266,65 @@
         <article role="main">
           <section id="balanced-calibrations">
 <span id="balanced"></span><h1>Balanced calibrations<a class="headerlink" href="#balanced-calibrations" title="Link to this heading">¶</a></h1>
-<p>The default calibration method for M3 is what is called “balanced” calibration.  We came up
-with this method as an intermediary step between truly “independent” calibrations that run
-two circuits for each qubit to get the error rates for <span class="math notranslate nohighlight">\(|0\rangle\)</span> <span class="math notranslate nohighlight">\(|1\rangle\)</span>,
-and “marginal” calibrations that execute only two circuits <span class="math notranslate nohighlight">\(|0\rangle^{\otimes N}\)</span>
-and <span class="math notranslate nohighlight">\(|1\rangle^{\otimes N}\)</span>.  These two methods are expensive, or can lead to inaccurate
-results when state prep errors are present, respectively.</p>
-<p>Balanced calibrations run <span class="math notranslate nohighlight">\(2N\)</span> circuits for <span class="math notranslate nohighlight">\(N\)</span> measured qubits, but the calibration
-circuits are chosen in such a way as to sample each error rate <span class="math notranslate nohighlight">\(N\)</span> times.  For example,
-consider the balanced calibration circuits for 5 qubits:</p>
+<p>The default calibration method for M3 is what is called “balanced” calibration.  Balanced calibrations
+sample all independent and pair-wise readout error rates evenly; hence the name “balanced”.  In M3 v3
+and higher, this routine has been updated to use a method from Bravyi et al, Phys. Rev. A 103, 042605 (2021).</p>
+<p>To see the bit-patterns used to generate the calibration circuits one can call the generator explicitly.  E.g. to
+see the strings for 5-qubits one would do</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">qiskit_ibm_runtime.fake_provider</span> <span class="kn">import</span> <span class="n">FakeAthensV2</span>
-<span class="kn">import</span> <span class="nn">mthree</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">mthree</span>
 
-<span class="n">mthree</span><span class="o">.</span><span class="n">circuits</span><span class="o">.</span><span class="n">balanced_cal_strings</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">gen</span> <span class="o">=</span> <span class="n">mthree</span><span class="o">.</span><span class="n">generators</span><span class="o">.</span><span class="n">HadamardGenerator</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<span class="nb">list</span><span class="p">(</span><span class="n">gen</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;01010&#39;,
- &#39;10101&#39;,
- &#39;00110&#39;,
- &#39;11001&#39;,
- &#39;00011&#39;,
- &#39;11100&#39;,
- &#39;00001&#39;,
- &#39;11110&#39;,
- &#39;00000&#39;,
- &#39;11111&#39;]
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[array([0, 0, 0, 0, 0], dtype=uint8),
+ array([1, 0, 1, 0, 1], dtype=uint8),
+ array([0, 1, 1, 0, 0], dtype=uint8),
+ array([1, 1, 0, 0, 1], dtype=uint8),
+ array([0, 0, 0, 1, 1], dtype=uint8),
+ array([1, 0, 1, 1, 0], dtype=uint8),
+ array([0, 1, 1, 1, 1], dtype=uint8),
+ array([1, 1, 0, 1, 0], dtype=uint8)]
 </pre></div>
 </div>
 </div>
 </div>
-<p>For every position in the bit-string you will see that a <cite>0</cite> or <cite>1</cite> appears <cite>N</cite> times.
+<p>For every position in the bit-string you will see that <cite>0</cite> or <cite>1</cite> appear an equal number of times,
+and the same is true for all pair-wise combinations of <cite>0</cite> and <cite>1</cite>.
 If there is a <cite>0</cite>, then that circuit samples the <span class="math notranslate nohighlight">\(|0\rangle\)</span> state for that qubit,
-similarly for the <cite>1</cite> element.  So when we execute the <cite>2N</cite> balanced calibration circuits
-using <cite>shots</cite> number of samples, then each error rate in the calibration data is actually
-being sampled <cite>N*shots</cite> times.  Thus, when you pass the <cite>shots</cite> value to M3, in the balanced
-calibration mode internally it divides by the number of measured qubits so that the precision
-matches the precison of the other methods.  That is to say that the following:</p>
+similarly for the <cite>1</cite> element.  So when we execute the balanced calibration circuits
+using <cite>shots</cite> number of samples, each error rate in the calibration data is actually
+being sampled more times than requested.  Thus, when you pass the <cite>shots</cite> value to M3, in the balanced
+calibration mode internally it divides by the number of measured qubits so that the precision of each
+error rate matches the precison of the other methods.  That is to say that the following:</p>
 <blockquote>
 <div><div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">backend</span> <span class="o">=</span> <span class="n">FakeAthensV2</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_ibm_runtime.fake_provider</span><span class="w"> </span><span class="kn">import</span> <span class="n">FakeAthensV2</span>
+
+<span class="n">backend</span> <span class="o">=</span> <span class="n">FakeAthensV2</span><span class="p">()</span>
 <span class="n">mit</span> <span class="o">=</span> <span class="n">mthree</span><span class="o">.</span><span class="n">M3Mitigation</span><span class="p">(</span><span class="n">backend</span><span class="p">)</span>
 <span class="n">mit</span><span class="o">.</span><span class="n">cals_from_system</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;balanced&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;qiskit_aer.jobs.aerjob.AerJob at 0x7f8c4c538e20&gt;]
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;qiskit_aer.jobs.aerjob.AerJob at 0x7ff510dce900&gt;]
 </pre></div>
 </div>
 </div>
 </div>
 </div></blockquote>
-<p>Will sample each qubit error rate <cite>10000</cite> times regardless of which method is used.  Moreover,
-this also yields a calibration process whose overhead is independent of the number of qubits
-used.  Note that, when using a simulator or “fake” device, M3 defaults to <cite>independent</cite>
-calibration mode for efficiency.  As such, to enable <cite>balanced</cite> calibration on a simulator
-one must explicitly set the <cite>method`</cite> as done above.</p>
+<p>Will sample each indepdendent qubit error rate <cite>10000</cite> times (or the max allowed by the target system if less)
+regardless of which method is used. All pair-wise correlations are measured half this number of times. This
+yields a calibration process whose  overhead is independent of the number of qubits used; there is no additional
+cost to compute the calibration over a full device.  Note that, when using a simulator or “fake” device,
+M3 defaults to <cite>independent</cite> calibration mode for efficiency.  As such, to enable <cite>balanced</cite> calibration on a
+simulator one must explicitly set the <cite>method`</cite> as done above.</p>
 </section>
 
         </article>
@@ -363,7 +361,7 @@ one must explicitly set the <cite>method`</cite> as done above.</p>
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/11/07</div>
+              Last updated on 2025/03/27</div>
           </div>
           <div class="right-details">
             
@@ -380,7 +378,7 @@ one must explicitly set the <cite>method`</cite> as done above.</p>
   </div>
 </div><script src="_static/jquery.js?v=5d32c60e"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="_static/documentation_options.js?v=cd87aae0"></script>
+    <script src="_static/documentation_options.js?v=acc74ff5"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>

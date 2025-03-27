@@ -41,13 +41,15 @@ When calibrating the mitigator, it is possible to vary the number of shots per c
 ``method``
 ~~~~~~~~~~
 
-There are three ways to do the calibration.  The default ``balanced`` method executes :math:`2N` circuits
+There are three ways to do the calibration.  The default ``balanced`` method a set of circuits
 with varying bitstring patterns such that the :math:`|0\rangle` and :math:`|1\rangle` states are each
-prepared :math:`N` times and averaged over.  For example, the balanced bit-strings over four qubits are
+prepared an even number of times, as is their pair-wise correlations.  For example, the 
+balanced bit-strings over four qubits are:
 
 .. jupyter-execute::
 
-    mthree.circuits.balanced_cal_strings(4)
+    gen = mthree.generators.HadamardGenerator(4)
+    list(gen)
 
 The ``independent`` method also sends :math:`2N` circuits but measures only a single qubit at a time.
 As such, this is a truely uncorrelated calibration process.

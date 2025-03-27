@@ -6,9 +6,9 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Saving and loading calibration data" href="cal_io.html" /><link rel="prev" title="Low-weight observables (Marginals)" href="marginals.html" />
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2024.01.29 -->
-        <title>Converting to probabilites - Mthree 2.8.1</title>
+        <title>Converting to probabilites - Mthree 3.0.0</title>
       <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-sphinx-theme.css?v=fe84956c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-ecosystem.css?v=745c5aa7" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
@@ -143,7 +143,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">Mthree 2.8.1</div></a>
+      <a href="index.html"><div class="brand">Mthree 3.0.0</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -170,7 +170,7 @@
     </div>
   </a>
   
-  <span class="sidebar-brand-text">Mthree 2.8.1</span>
+  <span class="sidebar-brand-text">Mthree 3.0.0</span>
 </div><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
@@ -178,7 +178,7 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
-<li class="toctree-l1"><a class="reference internal" href="index.html">mthree (2.8.1)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">mthree (3.0.0)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="citing.html">Citing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="papers.html">Papers using M3</a></li>
@@ -275,9 +275,9 @@ terms of <span class="math notranslate nohighlight">\(L2\)</span>-norm using:
 done in linear time.</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">qiskit</span> <span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">qiskit_ibm_runtime.fake_provider</span> <span class="kn">import</span> <span class="n">FakeCasablancaV2</span>
-<span class="kn">import</span> <span class="nn">mthree</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_ibm_runtime.fake_provider</span><span class="w"> </span><span class="kn">import</span> <span class="n">FakeCasablancaV2</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">mthree</span>
 
 <span class="n">qc</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
 <span class="n">qc</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">))</span>
@@ -304,37 +304,27 @@ done in linear time.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;011001&#39;: np.float32(4.707797e-05),
- &#39;110100&#39;: np.float32(5.650698e-05),
- &#39;101100&#39;: np.float32(6.83671e-05),
- &#39;011100&#39;: np.float32(7.7837496e-05),
- &#39;110001&#39;: np.float32(0.00010499917),
- &#39;010100&#39;: np.float32(0.000108673004),
- &#39;000101&#39;: np.float32(0.00012767228),
- &#39;011011&#39;: np.float32(0.00019099959),
- &#39;101101&#39;: np.float32(0.00026913657),
- &#39;100111&#39;: np.float32(0.0003418473),
- &#39;001110&#39;: np.float32(0.00037118915),
- &#39;001000&#39;: np.float32(0.0010693646),
- &#39;111101&#39;: np.float32(0.0013000557),
- &#39;100000&#39;: np.float32(0.0015309765),
- &#39;110000&#39;: np.float32(0.002023466),
- &#39;011111&#39;: np.float32(0.0021256532),
- &#39;000010&#39;: np.float32(0.0021290563),
- &#39;010000&#39;: np.float32(0.002521949),
- &#39;000110&#39;: np.float32(0.0030104595),
- &#39;000001&#39;: np.float32(0.0032607021),
- &#39;101111&#39;: np.float32(0.0033600668),
- &#39;111110&#39;: np.float32(0.003680723),
- &#39;000100&#39;: np.float32(0.004295373),
- &#39;110111&#39;: np.float32(0.0047780294),
- &#39;111011&#39;: np.float32(0.005021414),
- &#39;001111&#39;: np.float32(0.005311705),
- &#39;111001&#39;: np.float32(0.005769953),
- &#39;000111&#39;: np.float32(0.005814682),
- &#39;111000&#39;: np.float32(0.006640652),
- &#39;111111&#39;: np.float32(0.46323493),
- &#39;000000&#39;: np.float32(0.4713565)}
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;000100&#39;: np.float32(6.473434e-05),
+ &#39;001110&#39;: np.float32(9.600079e-05),
+ &#39;100111&#39;: np.float32(0.0001649973),
+ &#39;110101&#39;: np.float32(0.00018833106),
+ &#39;101011&#39;: np.float32(0.00027177174),
+ &#39;000110&#39;: np.float32(0.0008907791),
+ &#39;000001&#39;: np.float32(0.0009815614),
+ &#39;001000&#39;: np.float32(0.0013853181),
+ &#39;100000&#39;: np.float32(0.0015513115),
+ &#39;110111&#39;: np.float32(0.002598933),
+ &#39;110000&#39;: np.float32(0.0031237034),
+ &#39;101111&#39;: np.float32(0.0032482478),
+ &#39;111001&#39;: np.float32(0.003527014),
+ &#39;111101&#39;: np.float32(0.0039979788),
+ &#39;001111&#39;: np.float32(0.0041356916),
+ &#39;111000&#39;: np.float32(0.004668914),
+ &#39;010000&#39;: np.float32(0.005247114),
+ &#39;000111&#39;: np.float32(0.006918437),
+ &#39;111011&#39;: np.float32(0.01640486),
+ &#39;111111&#39;: np.float32(0.45435613),
+ &#39;000000&#39;: np.float32(0.4861782)}
 </pre></div>
 </div>
 </div>
@@ -375,7 +365,7 @@ done in linear time.</p>
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/11/07</div>
+              Last updated on 2025/03/27</div>
           </div>
           <div class="right-details">
             
@@ -392,7 +382,7 @@ done in linear time.</p>
   </div>
 </div><script src="_static/jquery.js?v=5d32c60e"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="_static/documentation_options.js?v=cd87aae0"></script>
+    <script src="_static/documentation_options.js?v=acc74ff5"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>

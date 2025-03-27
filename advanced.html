@@ -6,9 +6,9 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="M3 paper example" href="tutorials/01_M3_ex1.html" /><link rel="prev" title="Balanced calibrations" href="balanced.html" />
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2024.01.29 -->
-        <title>Advanced usage - Mthree 2.8.1</title>
+        <title>Advanced usage - Mthree 3.0.0</title>
       <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-sphinx-theme.css?v=fe84956c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-ecosystem.css?v=745c5aa7" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
@@ -143,7 +143,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">Mthree 2.8.1</div></a>
+      <a href="index.html"><div class="brand">Mthree 3.0.0</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -170,7 +170,7 @@
     </div>
   </a>
   
-  <span class="sidebar-brand-text">Mthree 2.8.1</span>
+  <span class="sidebar-brand-text">Mthree 3.0.0</span>
 </div><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
@@ -178,7 +178,7 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
-<li class="toctree-l1"><a class="reference internal" href="index.html">mthree (2.8.1)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">mthree (3.0.0)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="citing.html">Citing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="papers.html">Papers using M3</a></li>
@@ -275,8 +275,8 @@ that determines when the automated method selector pickes the iterative method
 over direct LU factorization (selection also depends on free memory).</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">qiskit_ibm_runtime.fake_provider</span> <span class="kn">import</span> <span class="n">FakeCasablancaV2</span>
-<span class="kn">import</span> <span class="nn">mthree</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_ibm_runtime.fake_provider</span><span class="w"> </span><span class="kn">import</span> <span class="n">FakeCasablancaV2</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">mthree</span>
 
 <span class="n">backend</span> <span class="o">=</span> <span class="n">FakeCasablancaV2</span><span class="p">()</span>
 <span class="n">mit</span> <span class="o">=</span> <span class="n">mthree</span><span class="o">.</span><span class="n">M3Mitigation</span><span class="p">(</span><span class="n">backend</span><span class="p">,</span> <span class="n">iter_threshold</span><span class="o">=</span><span class="mi">4321</span><span class="p">)</span>
@@ -301,7 +301,7 @@ over direct LU factorization (selection also depends on free memory).</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;qiskit_aer.jobs.aerjob.AerJob at 0x7fbbd83d4fa0&gt;]
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;qiskit_aer.jobs.aerjob.AerJob at 0x7f52df061e20&gt;]
 </pre></div>
 </div>
 </div>
@@ -309,17 +309,26 @@ over direct LU factorization (selection also depends on free memory).</p>
 </section>
 <section id="method">
 <h3><code class="docutils literal notranslate"><span class="pre">method</span></code><a class="headerlink" href="#method" title="Link to this heading">¶</a></h3>
-<p>There are three ways to do the calibration.  The default <code class="docutils literal notranslate"><span class="pre">balanced</span></code> method executes <span class="math notranslate nohighlight">\(2N\)</span> circuits
+<p>There are three ways to do the calibration.  The default <code class="docutils literal notranslate"><span class="pre">balanced</span></code> method a set of circuits
 with varying bitstring patterns such that the <span class="math notranslate nohighlight">\(|0\rangle\)</span> and <span class="math notranslate nohighlight">\(|1\rangle\)</span> states are each
-prepared <span class="math notranslate nohighlight">\(N\)</span> times and averaged over.  For example, the balanced bit-strings over four qubits are</p>
+prepared an even number of times, as is their pair-wise correlations.  For example, the
+balanced bit-strings over four qubits are:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mthree</span><span class="o">.</span><span class="n">circuits</span><span class="o">.</span><span class="n">balanced_cal_strings</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gen</span> <span class="o">=</span> <span class="n">mthree</span><span class="o">.</span><span class="n">generators</span><span class="o">.</span><span class="n">HadamardGenerator</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="nb">list</span><span class="p">(</span><span class="n">gen</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;0101&#39;, &#39;1010&#39;, &#39;0011&#39;, &#39;1100&#39;, &#39;0001&#39;, &#39;1110&#39;, &#39;0000&#39;, &#39;1111&#39;]
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[array([0, 0, 0, 0], dtype=uint8),
+ array([1, 0, 1, 0], dtype=uint8),
+ array([0, 1, 1, 0], dtype=uint8),
+ array([1, 1, 0, 0], dtype=uint8),
+ array([0, 0, 0, 1], dtype=uint8),
+ array([1, 0, 1, 1], dtype=uint8),
+ array([0, 1, 1, 1], dtype=uint8),
+ array([1, 1, 0, 1], dtype=uint8)]
 </pre></div>
 </div>
 </div>
@@ -340,7 +349,7 @@ state preparation errors, and should not be used in practice.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;qiskit_aer.jobs.aerjob.AerJob at 0x7fbbd833a050&gt;]
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;qiskit_aer.jobs.aerjob.AerJob at 0x7f529c141550&gt;]
 </pre></div>
 </div>
 </div>
@@ -364,7 +373,7 @@ option.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;qiskit_aer.jobs.aerjob.AerJob at 0x7fbbd83d50f0&gt;]
+<div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[&lt;qiskit_aer.jobs.aerjob.AerJob at 0x7f528f5e4380&gt;]
 </pre></div>
 </div>
 </div>
@@ -389,7 +398,7 @@ actual circuits may still suffer from these errors.</p>
 <p>Here we first calibrate a mitigator and generate raw counts:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">qiskit</span> <span class="kn">import</span> <span class="o">*</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
 <span class="n">qc</span> <span class="o">=</span> <span class="n">QuantumCircuit</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
 <span class="n">qc</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">))</span>
@@ -461,15 +470,16 @@ up to <code class="docutils literal notranslate"><span class="pre">distance=3</s
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;method&#39;: &#39;direct&#39;, &#39;time&#39;: 0.0001660210000125062, &#39;dimension&#39;: 44, &#39;col_norms&#39;: array([0.9991987 , 0.9628587 , 0.98538595, 0.97123784, 0.98513776,
-       0.99302775, 0.97786385, 0.9782937 , 0.9859417 , 0.9609599 ,
-       0.948159  , 0.9786799 , 0.9984028 , 0.9780926 , 0.95648533,
-       0.92860085, 0.9835394 , 0.9321074 , 0.9581357 , 0.95899475,
-       0.9598778 , 0.99740773, 0.96948814, 0.9568221 , 0.9568263 ,
-       0.9758898 , 0.9544127 , 0.9515043 , 0.9508917 , 0.9569788 ,
-       0.9977843 , 0.9694043 , 0.90190464, 0.90020055, 0.93124384,
-       0.9951148 , 0.9983702 , 0.9550446 , 0.933478  , 0.99592066,
-       0.95833814, 0.9966683 , 0.99698824, 0.9998342 ], dtype=float32)}
+<div class="output stream highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;method&#39;: &#39;direct&#39;, &#39;time&#39;: 0.00019850000001042645, &#39;dimension&#39;: 46, &#39;col_norms&#39;: array([0.9997369 , 0.9934938 , 0.9816814 , 0.98723745, 0.99345076,
+       0.9875055 , 0.99334216, 0.99322766, 0.993346  , 0.9936005 ,
+       0.9688845 , 0.9874025 , 0.993204  , 0.97599626, 0.9989528 ,
+       0.99299145, 0.9629821 , 0.96933705, 0.9245731 , 0.9740077 ,
+       0.93249553, 0.93301964, 0.93922776, 0.9967297 , 0.98004246,
+       0.98681974, 0.9699273 , 0.9862459 , 0.9722037 , 0.9735235 ,
+       0.9845411 , 0.97589123, 0.9627163 , 0.9740458 , 0.8984659 ,
+       0.89753133, 0.92851186, 0.9713527 , 0.9985276 , 0.96048987,
+       0.9598227 , 0.99693966, 0.9358015 , 0.9724935 , 0.9969933 ,
+       0.998885  ], dtype=float32)}
 </pre></div>
 </div>
 </div>
@@ -547,7 +557,7 @@ is set too low.</p>
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/11/07</div>
+              Last updated on 2025/03/27</div>
           </div>
           <div class="right-details">
             
@@ -601,7 +611,7 @@ is set too low.</p>
   </div>
 </div><script src="_static/jquery.js?v=5d32c60e"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="_static/documentation_options.js?v=cd87aae0"></script>
+    <script src="_static/documentation_options.js?v=acc74ff5"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>

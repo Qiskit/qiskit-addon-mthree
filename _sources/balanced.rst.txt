@@ -4,41 +4,41 @@
 Balanced calibrations
 #####################
 
-The default calibration method for M3 is what is called "balanced" calibration.  We came up
-with this method as an intermediary step between truly "independent" calibrations that run
-two circuits for each qubit to get the error rates for :math:`|0\rangle` :math:`|1\rangle`,
-and "marginal" calibrations that execute only two circuits :math:`|0\rangle^{\otimes N}`
-and :math:`|1\rangle^{\otimes N}`.  These two methods are expensive, or can lead to inaccurate
-results when state prep errors are present, respectively.
+The default calibration method for M3 is what is called "balanced" calibration.  Balanced calibrations
+sample all independent and pair-wise readout error rates evenly; hence the name "balanced".  In M3 v3
+and higher, this routine has been updated to use a method from Bravyi et al, Phys. Rev. A 103, 042605 (2021).
 
-Balanced calibrations run :math:`2N` circuits for :math:`N` measured qubits, but the calibration
-circuits are chosen in such a way as to sample each error rate :math:`N` times.  For example,
-consider the balanced calibration circuits for 5 qubits:
+To see the bit-patterns used to generate the calibration circuits one can call the generator explicitly.  E.g. to
+see the strings for 5-qubits one would do 
 
 .. jupyter-execute::
 
-    from qiskit_ibm_runtime.fake_provider import FakeAthensV2
     import mthree
 
-    mthree.circuits.balanced_cal_strings(5)
+    gen = mthree.generators.HadamardGenerator(5)
+    list(gen)
 
 
-For every position in the bit-string you will see that a `0` or `1` appears `N` times.
+For every position in the bit-string you will see that `0` or `1` appear an equal number of times,
+and the same is true for all pair-wise combinations of `0` and `1`.
 If there is a `0`, then that circuit samples the :math:`|0\rangle` state for that qubit,
-similarly for the `1` element.  So when we execute the `2N` balanced calibration circuits
-using `shots` number of samples, then each error rate in the calibration data is actually
-being sampled `N*shots` times.  Thus, when you pass the `shots` value to M3, in the balanced
-calibration mode internally it divides by the number of measured qubits so that the precision
-matches the precison of the other methods.  That is to say that the following:
+similarly for the `1` element.  So when we execute the balanced calibration circuits
+using `shots` number of samples, each error rate in the calibration data is actually
+being sampled more times than requested.  Thus, when you pass the `shots` value to M3, in the balanced
+calibration mode internally it divides by the number of measured qubits so that the precision of each
+error rate matches the precison of the other methods.  That is to say that the following:
 
  .. jupyter-execute::
 
+    from qiskit_ibm_runtime.fake_provider import FakeAthensV2
+    
     backend = FakeAthensV2()
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system(method='balanced')
 
-Will sample each qubit error rate `10000` times regardless of which method is used.  Moreover,
-this also yields a calibration process whose overhead is independent of the number of qubits
-used.  Note that, when using a simulator or "fake" device, M3 defaults to `independent`
-calibration mode for efficiency.  As such, to enable `balanced` calibration on a simulator
-one must explicitly set the `method`` as done above.
+Will sample each indepdendent qubit error rate `10000` times (or the max allowed by the target system if less) 
+regardless of which method is used. All pair-wise correlations are measured half this number of times. This
+yields a calibration process whose  overhead is independent of the number of qubits used; there is no additional
+cost to compute the calibration over a full device.  Note that, when using a simulator or "fake" device, 
+M3 defaults to `independent` calibration mode for efficiency.  As such, to enable `balanced` calibration on a 
+simulator one must explicitly set the `method`` as done above.

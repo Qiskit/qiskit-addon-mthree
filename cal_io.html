@@ -6,9 +6,9 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Utility functions" href="utils.html" /><link rel="prev" title="Converting to probabilites" href="probs.html" />
 
     <!-- Generated with Sphinx 7.3.7 and Furo 2024.01.29 -->
-        <title>Saving and loading calibration data - Mthree 2.8.1</title>
+        <title>Saving and loading calibration data - Mthree 3.0.0</title>
       <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-sphinx-theme.css?v=fe84956c" />
     <link rel="stylesheet" type="text/css" href="_static/styles/qiskit-ecosystem.css?v=745c5aa7" />
     <link rel="stylesheet" type="text/css" href="_static/jupyter-sphinx.css" />
@@ -143,7 +143,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">Mthree 2.8.1</div></a>
+      <a href="index.html"><div class="brand">Mthree 3.0.0</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -170,7 +170,7 @@
     </div>
   </a>
   
-  <span class="sidebar-brand-text">Mthree 2.8.1</span>
+  <span class="sidebar-brand-text">Mthree 3.0.0</span>
 </div><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
   <input type="hidden" name="check_keywords" value="yes">
@@ -178,7 +178,7 @@
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
   <ul>
-<li class="toctree-l1"><a class="reference internal" href="index.html">mthree (2.8.1)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="index.html">mthree (3.0.0)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="citing.html">Citing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="papers.html">Papers using M3</a></li>
@@ -270,8 +270,8 @@
 Let us generate some calibration data and save it.</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">qiskit_ibm_runtime.fake_provider</span> <span class="kn">import</span> <span class="n">FakeCasablancaV2</span>
-<span class="kn">import</span> <span class="nn">mthree</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit_ibm_runtime.fake_provider</span><span class="w"> </span><span class="kn">import</span> <span class="n">FakeCasablancaV2</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">mthree</span>
 
 <span class="n">backend</span> <span class="o">=</span> <span class="n">FakeCasablancaV2</span><span class="p">()</span>
 
@@ -283,14 +283,14 @@ Let us generate some calibration data and save it.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[None,
- array([[0.99328613, 0.02185059],
-        [0.00671387, 0.9781494 ]], dtype=float32),
+ array([[0.9908447 , 0.02368164],
+        [0.00915527, 0.97631836]], dtype=float32),
  None,
- array([[0.9869385 , 0.01940918],
-        [0.01306152, 0.9805908 ]], dtype=float32),
+ array([[0.9869385 , 0.01928711],
+        [0.01306152, 0.9807129 ]], dtype=float32),
  None,
- array([[0.9926758 , 0.03161621],
-        [0.00732422, 0.9683838 ]], dtype=float32),
+ array([[0.9937744 , 0.02526855],
+        [0.00622559, 0.97473145]], dtype=float32),
  None]
 </pre></div>
 </div>
@@ -311,7 +311,7 @@ Let us generate some calibration data and save it.</p>
 <p>We can then load this data at a later point in time using:</p>
 <div class="jupyter_cell jupyter_container docutils container">
 <div class="cell_input code_cell docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">mthree</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">mthree</span>
 
 <span class="n">mit2</span> <span class="o">=</span> <span class="n">mthree</span><span class="o">.</span><span class="n">M3Mitigation</span><span class="p">()</span>
 <span class="n">mit2</span><span class="o">.</span><span class="n">cals_from_file</span><span class="p">(</span><span class="s1">&#39;my_cals.json&#39;</span><span class="p">)</span>
@@ -321,14 +321,14 @@ Let us generate some calibration data and save it.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-none notranslate"><div class="highlight"><pre><span></span>[None,
- array([[0.9925537 , 0.02258301],
-        [0.00744629, 0.977417  ]], dtype=float32),
+ array([[0.9909668 , 0.02038574],
+        [0.0090332 , 0.97961426]], dtype=float32),
  None,
- array([[0.9836426 , 0.01403809],
-        [0.01635742, 0.9859619 ]], dtype=float32),
+ array([[0.9857178 , 0.01831055],
+        [0.01428223, 0.98168945]], dtype=float32),
  None,
- array([[0.9925537 , 0.03076172],
-        [0.00744629, 0.9692383 ]], dtype=float32),
+ array([[0.99279785, 0.02880859],
+        [0.00720215, 0.9711914 ]], dtype=float32),
  None]
 </pre></div>
 </div>
@@ -370,7 +370,7 @@ Let us generate some calibration data and save it.</p>
             
             <a href="https://github.com/pradyunsg/furo">Furo</a>
             <div class="last-updated">
-              Last updated on 2024/11/07</div>
+              Last updated on 2025/03/27</div>
           </div>
           <div class="right-details">
             
@@ -387,7 +387,7 @@ Let us generate some calibration data and save it.</p>
   </div>
 </div><script src="_static/jquery.js?v=5d32c60e"></script>
     <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-    <script src="_static/documentation_options.js?v=cd87aae0"></script>
+    <script src="_static/documentation_options.js?v=acc74ff5"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/qiskit-sphinx-theme.js?v=4d77b8ca"></script>
