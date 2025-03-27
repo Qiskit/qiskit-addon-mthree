@@ -4,3 +4,4 @@ include requirements.txt
 recursive-include mthree *.pyx
 recursive-include mthree *.pxd
 recursive-include mthree/test/data *.json
+recursive-include mthree/src *.h
