@@ -1,7 +1,7 @@
 name: Release Artifacts
 on:
   pull_request:
-    branches: [3.0]
+    branches: []
 
 jobs:
   build_wheels:
