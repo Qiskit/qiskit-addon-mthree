@@ -4,6 +4,40 @@
 Papers using M3
 ###############
 
+#. "Achieving computational gains with quantum error correction primitives: Generation of long-range entanglement enhanced by error detection", Haoran Liao, Gavin S. Hartnett, Ashish Kakkar, Adrian Tan, Michael Hush, Pranav S. Mundada, Michael J. Biercuk, Yuval Baum, `arXiv:2411.14638 <https://doi.org/10.48550/arXiv:2411.14638>`_.
+
+#. "Next Generation Power System Planning and Operation With Quantum Computation", Priyanka Arkalgud Ganeshamurthy, Kumar Ghosh, Corey O'Meara, Giorgio Cortiana, Jan Schiefelbein-Lach, Antonello Monti, `EEE Access, vol. 12, 182673, 2024 <https://doi.org/10.1109/ACCESS.2024.3509743>`_.
+
+#. "Mitigating exponential concentration in covariant quantum kernels for subspace and real-world data", Gabriele Agliardi, Giorgio Cortiana, Anton Dekusar, Kumar Ghosh, Naeimeh Mohseni, Corey O'Meara, Víctor Valls, Kavitha Yogaraj, Sergiy Zhuk, `arXiv:2412.07915 <https://doi.org/10.48550/arXiv:2412.07915>`_.
+
+#. "Sparse Non-Markovian Noise Modeling of Transmon-Based Multi-Qubit Operations", Yasuo Oda, Kevin Schultz, Leigh Norris, Omar Shehab, Gregory Quiroz, `arXiv:2412.16092 <https://doi.org/10.48550/arXiv:2412.16092>`_.
+
+#. "Experimental computations of atomic properties on a superconducting quantum processor",Akhil Pratap Singh, Kenji Sugisaki, Srinivasa Prasannaa, Bijaya Kumar Sahoo, Bhanu Pratap Das, and Yasunobu Nakamura, `Phys. Rev. A 110, 062620 (2024) <https://doi.org/10.1103/PhysRevA.110.062620>`_.
+
+#. "Enhancing computational accuracy with parallel parameter optimization in variational quantum eigensolver", Daisuke Tsukayama, Jun-ichi Shirakashi, Tetsuo Shibuya, Hiroshi Imai, `AIP Advances 15, 015226 (2025) <https://doi.org/10.1063/5.0236028>`_.
+
+#. "Quantum Error Correction Without Encoding via the Circulant Structure of Pauli Noise and the Fast Fourier Transform", Alvin Gonzales, `arXiv:2501.01953 <https://doi.org/10.48550/arXiv:2501.01953>`_.
+
+#. "Developing techniques for Simulation of SU(3) Quantum Field Theories on State-of-the-Art Quantum Devices", Ivan Chernyshev, `arXiv:2502.02502 <https://doi.org/10.48550/arXiv:2502.02502>`_.
+
+#. "Certified Random Number Generation using Quantum Computers", Pingal Pratyush Nath, Aninda Sinha, Urbasi Sinha, `arXiv:2502.02973 <https://doi.org/10.48550/arXiv:2502.02973>`_.
+
+#. "First-principle crosstalk dynamics and Hamiltonian learning via Rabi experiments", Jan Balewski, Adam Winick, Yilun Xu, Neel Vora, Gang Huang, David Santiago, Joseph Emerson, Irfan Siddiqi, `arXiv:2502.05362 <https://doi.org/10.48550/arXiv:2502.05362>`_.
+
+#. "Variational Quantum Algorithms for Many-Body Systems", Mirko Consiglio, `arXiv:2502.11985 <https://doi.org/10.48550/arXiv:2502.11985>`_.
+
+#. "Benchmarking MedMNIST dataset on real quantum hardware", Gurinder Singh, Hongni Jin, Kenneth M. Merz Jr, `arXiv:2502.13056 <https://doi.org/10.48550/arXiv:2502.13056>`_.
+
+#. "Efficient Quantum Chemistry Calculations on Noisy Quantum Hardware", Nora Bauer, Kübra Yeter-Aydeniz, George Siopsis, `arXiv:2503.02778 <https://doi.org/10.48550/arXiv:2503.02778>`_.
+
+#. "Non-equilibrium thermodynamics of precision through a quantum-centric computation", Mario Motta, Antonio Mezzacapo, Giacomo Guarnieri, `arXiv:2503.03868 <https://doi.org/10.48550/arXiv:2503.03868>`_.
+
+#. "Noise-Robust Estimation of Quantum Observables in Noisy Hardware", Amin Hosseinkhani, Fedor Šimkovic, Alessio Calzona, Tianhan Liu, Adrian Auer, Inés de Vega, `arXiv:2503.06695 <https://doi.org/10.48550/arXiv:2503.06695>`_.
+
+#. "A Superconducting Qubit-Resonator Quantum Processor with Effective All-to-All Connectivity", Michael Renger, Jeroen Verjauw, Nicola Wurz, Amin Hosseinkhani, Caspar Ockeloen-Korppi, Wei Liu, Aniket Rath, Manish J. Thapa, Florian Vigneau, Elisabeth Wybo, Ville Bergholm, Chun Fai Chan, Bálint Csatári, Saga Dahl, Rakhim Davletkaliyev, Rakshyakar Giri, Daria Gusenkova, Hermanni Heimonen, Tuukka Hiltunen, Hao Hsu, Eric Hyyppä, Joni Ikonen, Tyler Jones, Shabeeb Khalid, Seung-Goo Kim, Miikka Koistinen, Anton Komlev, Janne Kotilahti, Vladimir Kukushkin, Julia Lamprich, Alessandro Landra, Lan-Hsuan Lee, Tianyi Li, Per Liebermann, Sourav Majumder, Janne Mäntylä, Fabian Marxer, Arianne Meijer - van de Griend, Vladimir Milchakov, Jakub Mrożek, Jayshankar Nath, Tuure Orell, Miha Papič, Matti Partanen, Alexander Plyushch, Stefan Pogorzalek, Jussi Ritvas, Pedro Figuero Romero, Ville Sampo, Marko Seppälä, Ville Selinmaa, Linus Sundström, Ivan Takmakov, Brian Tarasinski, Jani Tuorila, Olli Tyrkkö, Alpo Välimaa, Jaap Wesdorp, Ping Yang, Liuqi Yu, Johannes Heinsoo, Antti Vepsäläinen, William Kindel, Hsiang-Sheng Ku, Frank Deppe, `arXiv:2503.10903 <https://doi.org/10.48550/arXiv:2503.10903>`_.
+
+#. "Refining Noise Mitigation in NISQ Hardware Through Qubit Error Probability", Nahual Sobrino, Unai Aseginolaza, Joaquim Jornet-Somoza, Juan Borge, `arXiv:2503.10204 <https://doi.org/10.48550/arXiv:2503.10204>`_.
+
 #. "Entanglement teleportation along a regenerating hamster-wheel graph state", Haiyue Kang, John F. Kam, Gary J. Mooney, Lloyd C. L. Hollenberg, `arXiv:2411.13060 <https://doi.org/10.48550/arXiv.2411.13060>`_.
 
 #. "Ptychographic estimation of pure multiqubit states in a quantum device", Warley M. S. Alves, Leonardo Neves, `APL Quantum 1, 046115 (2024) <https://doi.org/10.1063/5.0236968>`_.
