@@ -66,7 +66,7 @@ def direct_solver(
         return_mitigation_overhead (bool): Returns the mitigation overhead, default=False.
 
     Returns:
-        QuasiDistribution: dict of QuasiProbabilities
+        QuasiDistribution: dict of Quasiprobabilities
     """
     cals = mitigator._form_cals(qubits)
     num_bits = len(qubits)
