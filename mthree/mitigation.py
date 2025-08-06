@@ -267,7 +267,7 @@ class M3Mitigation:
     def cals_from_matrices(self, matrices):
         """Init calibration data from list of NumPy arrays.
 
-        Missing entires are set to None elements.
+        Missing entries are set to None elements.
 
         Parameters:
             matrices (list_like): List of cals as NumPy arrays

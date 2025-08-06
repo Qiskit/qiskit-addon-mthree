@@ -26,7 +26,7 @@ similarly for the `1` element.  So when we execute the balanced calibration circ
 using `shots` number of samples, each error rate in the calibration data is actually
 being sampled more times than requested.  Thus, when you pass the `shots` value to M3, in the balanced
 calibration mode internally it divides by the number of measured qubits so that the precision of each
-error rate matches the precison of the other methods.  That is to say that the following:
+error rate matches the precision of the other methods.  That is to say that the following:
 
  .. jupyter-execute::
 
@@ -36,7 +36,7 @@ error rate matches the precison of the other methods.  That is to say that the f
     mit = mthree.M3Mitigation(backend)
     mit.cals_from_system(method='balanced')
 
-Will sample each indepdendent qubit error rate `10000` times (or the max allowed by the target system if less) 
+Will sample each independent qubit error rate `10000` times (or the max allowed by the target system if less) 
 regardless of which method is used. All pair-wise correlations are measured half this number of times. This
 yields a calibration process whose  overhead is independent of the number of qubits used; there is no additional
 cost to compute the calibration over a full device.  Note that, when using a simulator or "fake" device, 

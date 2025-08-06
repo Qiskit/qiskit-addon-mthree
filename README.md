@@ -97,7 +97,7 @@ expval, stddev = quasi.expval_and_stddev()
 The results of M3 mitigation are quasi-probabilities that nominally contain small negative values.
 This is suitable for use in computing corrected expectation values or sampling problems
 where one is interested in the highest probability bit-string.  However, if one needs
-a true probability distribution then it is possible to convert from quasi-probabilites to
+a true probability distribution then it is possible to convert from quasi-probabilities to
 the closest true probability distribution in L2-norm using:
 
 ```python

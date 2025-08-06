@@ -47,7 +47,7 @@ a noisy-simulator.
     quasi3 = mit.apply_correction(raw3, [0,1,2], return_mitigation_overhead=True)
 
 
-Now let us compute the expectaion values of these distributions for the default
+Now let us compute the expectation values of these distributions for the default
 case of ``Z`` operators on each qubit:
 
 .. jupyter-execute::

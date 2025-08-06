@@ -37,13 +37,13 @@ def _test_vector_column_norm(object counts,
     cdef map[string, float] counts_map = counts
     cdef unsigned int num_elems = counts_map.size()
 
-    # Assign memeory for bitstrings and input probabilities
+    # Assign memory for bitstrings and input probabilities
     cdef unsigned char * bitstrings = <unsigned char *>malloc(num_bits*num_elems*sizeof(unsigned char))
     cdef float * input_probs = <float *>malloc(num_elems*sizeof(float))
-    # Assign memeory for column norms
+    # Assign memory for column norms
     cdef float[::1] col_norms = np.zeros(num_elems, dtype=np.float32)
 
-    # Convert sorted counts dict into bistrings and input probability arrays
+    # Convert sorted counts dict into bitstrings and input probability arrays
     counts_to_internal(&counts_map, bitstrings, input_probs, num_bits, shots)
     # Compute column norms
     compute_col_norms(&col_norms[0], bitstrings, &cals[0], num_bits, num_elems, distance)

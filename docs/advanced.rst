@@ -11,7 +11,7 @@ Options for M3Mitigation class
 ~~~~~~~~~~~~~~~~~~
 
 The main :class:`mthree.M3Mitigation` class accepts the `iter_threshold` keyword argument
-that determines when the automated method selector pickes the iterative method 
+that determines when the automated method selector picks the iterative method 
 over direct LU factorization (selection also depends on free memory).
 
 .. jupyter-execute::
@@ -52,7 +52,7 @@ balanced bit-strings over four qubits are:
     list(gen)
 
 The ``independent`` method also sends :math:`2N` circuits but measures only a single qubit at a time.
-As such, this is a truely uncorrelated calibration process.
+As such, this is a truly uncorrelated calibration process.
 
 Finally, a ``marginal`` calibration can also be done that sends only two circuits,
 :math:`|0\rangle^{\otimes N}` and :math:`|1\rangle^{\otimes N}`, and marginalizes over the
@@ -94,7 +94,7 @@ option.
     Do not set this unless you know what you are doing.
 
 A boolean value that specifies whether reset instructions should be used at the beginning of the
-calibration circuits.  Ideally this helps to supress any residual state prep errors that occur from
+calibration circuits.  Ideally this helps to suppress any residual state prep errors that occur from
 imperfect reset of the qubits.  Can be used in concert with, or as an alternative to ``rep_delay``.
 Note that, in order for this to work, the circuits that need to be mitigated must also have reset
 instructions at the beginning.  Otherwise you are calibrating for no state-prep errors, but the
@@ -145,8 +145,8 @@ can simply set the option:
 
 ``distance``
 ~~~~~~~~~~~~
-Optionally one may trucate the M3 assignment matrix to only those elements of the matrix that
-are transistions between elements less than or equal to a given Hamming distance away from
+Optionally one may truncate the M3 assignment matrix to only those elements of the matrix that
+are transitions between elements less than or equal to a given Hamming distance away from
 each other.  This does not change the dimensionality of the underlying matrix, but rather
 changes the sparsity pattern of the elements.  This is done using the ``distance`` keyword argument.
 By default, M3 computes the corrections out to the full distance.  In practice, including only

@@ -15,12 +15,12 @@ of equations is nominally much easier to solve.
     :align: center
 
 It is often the case that this linear equation is trivial to solve using LU decomposition,
-using only modest computing resources.  However, if the number of unique bistrings is large,
+using only modest computing resources.  However, if the number of unique bitstrings is large,
 and / or one has very tight memory constraints, then the problem can be solved in a matrix-free
 manner using a preconditioned iterative linear solution method, e.g. the Generalized minimal
 residual (GMRES) or biconjugate gradient stabilized (BiCGSTAB) methods.
 
-M3 is suitable for problems ameanable to using quasi-probabilities such as those
+M3 is suitable for problems amenable to using quasi-probabilities such as those
 formulated in terms of expectation values, or sampling problems where, for example, one is
 interested in the bit-string with the highest probability.  Quasi-probabilities can be
 projected onto the nearest probability distribution if true probabilities are desired, but
