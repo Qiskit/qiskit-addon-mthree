@@ -4,7 +4,7 @@
 Error analysis
 ##############
 
-Mitigating readout errors does not come for free.  Instead, there is an overhaed that
+Mitigating readout errors does not come for free.  Instead, there is an overhead that
 results in increased uncertainty in the computed results.  M3 will optionally compute this
 overhead and return an upper-bound on the expected standard deviation (variance) of the
 computed expectation values.
@@ -42,14 +42,14 @@ Let us first calibrate the mitigator and get raw results:
     raw_counts = backend.run(trans_qc, shots=8192).result().get_counts()
 
 
-In order to compute the standard deviation of out mitigated expectation values
+In order to compute the standard deviation of our mitigated expectation values
 we need to request the information be computed:
 
 .. jupyter-execute::
 
     quasis = mit.apply_correction(raw_counts, range(6), return_mitigation_overhead=True)
 
-The mitigation overhead is returned as an attribute of the returned quasi-probabilites
+The mitigation overhead is returned as an attribute of the returned quasi-probabilities
 
 .. jupyter-execute::
 
@@ -69,4 +69,4 @@ It is also possible to return both the expectation value and standard deviation 
     quasis.expval_and_stddev()
 
 Although this standard deviation is an upper-bound, it is usually a tight upper-bound that can be
-faithfully used futher analysis.
+faithfully used further analysis.

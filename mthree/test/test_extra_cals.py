@@ -22,7 +22,7 @@ import mthree
 
 
 def test_missing_qubit_cal():
-    """Test if missing calibration is retrived at apply_correcton."""
+    """Test if missing calibration is retrieved at apply_correction."""
 
     qc = QuantumCircuit(5)
     qc.h(2)

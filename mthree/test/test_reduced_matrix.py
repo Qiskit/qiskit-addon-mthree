@@ -56,7 +56,7 @@ def vector_to_probs(vec, counts):
     """Return dict of probabilities.
 
     Parameters:
-        vec (ndarray): 1d vector of probabilites.
+        vec (ndarray): 1d vector of probabilities.
         counts (dict): Dict of counts
 
     Returns:

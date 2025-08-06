@@ -1,7 +1,7 @@
 .. _probs:
 
 ##########################
-Converting to probabilites
+Converting to probabilities
 ##########################
 
 M3 natively works with quasi-probability distributions; distributions that contain negative values

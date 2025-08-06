@@ -28,11 +28,11 @@ def _test_counts_to_array(object counts):
     cdef size_t kk, ll
     cdef list out
     
-    # Assign memeory for bitstrings and input probabilities
+    # Assign memory for bitstrings and input probabilities
     cdef unsigned char * bitstrings = <unsigned char *>malloc(num_bits*num_elems*sizeof(unsigned char))
     cdef float * input_probs = <float *>malloc(num_elems*sizeof(float))
 
-    # Convert sorted counts dict into bistrings and input probability arrays
+    # Convert sorted counts dict into bitstrings and input probability arrays
     counts_to_internal(&counts_map, bitstrings, input_probs, num_bits, shots)
 
     out = ['']*num_elems
@@ -55,11 +55,11 @@ def _test_counts_roundtrip(object counts):
     cdef unsigned int num_elems = counts_map.size()
     cdef size_t kk, ll
     
-    # Assign memeory for bitstrings and input probabilities
+    # Assign memory for bitstrings and input probabilities
     cdef unsigned char * bitstrings = <unsigned char *>malloc(num_bits*num_elems*sizeof(unsigned char))
     cdef float * input_probs = <float *>malloc(num_elems*sizeof(float))
 
-    # Convert sorted counts dict into bistrings and input probability arrays
+    # Convert sorted counts dict into bitstrings and input probability arrays
     counts_to_internal(&counts_map, bitstrings, input_probs, num_bits, shots)
     internal_to_probs(&counts_map, input_probs)
     cdef dict out = counts_map

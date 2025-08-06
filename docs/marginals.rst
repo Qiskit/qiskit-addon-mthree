@@ -6,7 +6,7 @@ Low-weight observables (Marginals)
 
 Often one is interested in computing expectation values of "low-weight" observables, where
 the operator is comprised of one or more identity operators, e.g. :math:`\langle IIZZII\rangle`.
-Qubits with an idenitiy do not need to be corrected because the eigenvalues associated with the
+Qubits with an identity do not need to be corrected because the eigenvalues associated with the
 :math:`|0\rangle` and :math:`|1\rangle` states are the same.  Because M3 scales with the number of
 bit-strings, removing these unneeded elements can reduce the amount of computation required. Below
 is an example of how to use M3 to marginalize and correct over the smaller distribution.

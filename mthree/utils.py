@@ -333,7 +333,7 @@ def vector_to_quasiprobs(vec, counts):
     """Return dict of quasi-probabilities.
 
     Parameters:
-        vec (ndarray): 1d vector of quasi-probabilites.
+        vec (ndarray): 1d vector of quasi-probabilities.
         counts (dict): Dict of counts
 
     Returns:

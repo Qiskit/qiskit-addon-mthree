@@ -48,7 +48,7 @@ def iterative_solver(
         return_mitigation_overhead (bool): Returns the mitigation overhead, default=False.
 
     Returns:
-        QuasiDistribution: dict of Quasiprobabilites
+        QuasiDistribution: dict of Quasiprobabilities
 
     Raises:
         M3Error: Solver did not converge.

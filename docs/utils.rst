@@ -62,7 +62,7 @@ computing things like expectation values.  So M3 includes the generic functions
 :func:`mthree.utils.expval_and_stddev` that operate on the native
 ``Counts`` objects in Qiskit.
 
-For example let us compare raw data verse the mitigated results in a simple case.
+For example let us compare raw data versus the mitigated results in a simple case.
 
 .. jupyter-execute::
 

@@ -144,7 +144,7 @@ openmp = %(with_omp)s
 local_path = os.path.dirname(os.path.abspath(sys.argv[0]))
 os.chdir(local_path)
 sys.path.insert(0, local_path)
-sys.path.insert(0, os.path.join(local_path, "mthree"))  # to retrive _version
+sys.path.insert(0, os.path.join(local_path, "mthree"))  # to retrieve _version
 
 # always rewrite _version
 if os.path.exists("mthree/version.py"):
