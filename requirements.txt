@@ -1,7 +1,7 @@
 numpy>=1.23
 scipy>=1.11.1
 cython>=3.0.10
-qiskit>=1.0
+qiskit>=1.0,<3
 psutil
 orjson>=3.0.0
 runningman>=2.1
