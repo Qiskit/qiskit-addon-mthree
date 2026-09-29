@@ -2,62 +2,41 @@
 Installation
 ############
 
-You can `pip` install M3 in serial mode using PyPi via:
+You can `pip` install M3 in using PyPi via:
 
 .. code-block:: bash
 
     pip install mthree
 
 
-Alternatively, you can install from source:
+This will install an OpenMP optimized version on Linux, and serial versions for OSX and Windows. Alternatively, one can install from source:
 
 .. code-block:: bash
 
-    python setup.py install
+    python install .
 
 
-To enable OpenMP, you must have an OpenMP 3.0+ enabled compiler and install with:
-
-.. code-block:: bash
-
-    python setup.py install --with-openmp
-
-
-Optionally you can also set ``-march=native`` using:
+To enable OpenMP, you must have an OpenMP 4.0+ enabled compiler and install with:
 
 .. code-block:: bash
 
-    python setup.py install --with-native
+    MTHREE_OPENMP=1 pip install .
 
-
-The ``openmp`` and ``native`` flags can be used simultaneously using a comma.
 
 OpenMP on OSX
 -------------
 
-On OSX, install LLVM using homebrew (You cannot use GCC):
+On OSX one must install GCC using homebrew:
 
 .. code-block:: bash
 
-    brew install llvm
+    brew install gcc
 
 
-after which the following (or the like) must be executed in the terminal:
-
-.. code-block:: bash
-
-    export PATH="/usr/local/opt/llvm/bin:$PATH"
-
-
-and
+Then installation with openmp can be accomplished using a call like:
 
 .. code-block:: bash
 
-    export LDFLAGS="-L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib"
-    export CPPFLAGS="-I/usr/local/opt/llvm/include"
+    MTHREE_OPENMP=1 CC=gcc-14 CXX=g++14 python setup.py install
 
-Install with OpenMP using:
-
-.. code-block:: bash
-
-    CC=clang CXX=clang python setup.py install --with-openmp
+Note that previously the instructions said to install LLVM and NOT GCC. However, in the latest version of OSX (Sequoia) LLVM based installations will build, but segfault upon execution. GCC however works fine, thus the change above.
